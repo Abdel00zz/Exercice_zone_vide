@@ -1,4 +1,5 @@
 import React, { useRef, useCallback, useId, useMemo } from 'react';
+import { Wand2 } from 'lucide-react';
 
 interface AnswerSpaceProps {
   height?: number;
@@ -10,7 +11,10 @@ const MM_TO_PX = 3.7795275591;
 const GRID_SIZE_MM = 5;
 const GRID_SIZE_PX = GRID_SIZE_MM * MM_TO_PX;
 const MIN_HEIGHT = 40;
-const MAX_HEIGHT = 750;
+// Augmentation significative de la hauteur max pour permettre de toucher le bas de page
+const MAX_HEIGHT = 1600; 
+const A4_HEIGHT_PX = 1123; // Hauteur approximative A4 en pixels (96 DPI)
+const PRINT_MARGIN_BOTTOM_PX = 50; // Marge de sécurité en bas de page
 
 // Palette Seyes douce et harmonieuse
 const THEME = {
@@ -40,12 +44,36 @@ const AnswerSpace: React.FC<AnswerSpaceProps> = ({ height = 120, onHeightChange 
 
   // Calcul optimisé du nombre de lignes (mémorisé)
   const gridDimensions = useMemo(() => {
-    const cols = Math.ceil(180 / GRID_SIZE_MM) + 1;
+    const cols = Math.ceil(210 / GRID_SIZE_MM) + 1; // Largeur A4 plus large pour couvrir
     const rows = Math.floor(height / GRID_SIZE_PX) + 1;
     return { cols, rows };
   }, [height]);
 
-  // Calcul de la nouvelle hauteur avec snapping
+  // Logique "Intelligente" pour remplir le reste de la page
+  const handleAutoFill = useCallback(() => {
+    if (!containerRef.current) return;
+
+    // Calculer la position absolue de l'élément dans le document
+    const rect = containerRef.current.getBoundingClientRect();
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const absoluteTop = rect.top + scrollTop;
+
+    // Estimer où nous sommes sur la page A4 actuelle
+    // (Position Absolue) modulo (Hauteur Page) nous donne la position Y sur la page courante
+    const positionOnPage = absoluteTop % A4_HEIGHT_PX;
+    
+    // Calculer l'espace restant
+    const remainingSpace = A4_HEIGHT_PX - positionOnPage - PRINT_MARGIN_BOTTOM_PX;
+
+    // Appliquer la nouvelle hauteur (bornée par min/max)
+    // On s'assure aussi que la hauteur est un multiple de la grille pour l'esthétique
+    let smartHeight = Math.max(MIN_HEIGHT, Math.min(MAX_HEIGHT, remainingSpace));
+    smartHeight = Math.floor(smartHeight / GRID_SIZE_PX) * GRID_SIZE_PX; // Snap to grid
+
+    onHeightChange(smartHeight);
+  }, [onHeightChange]);
+
+  // Calcul de la nouvelle hauteur avec snapping (redimensionnement manuel)
   const calculateHeight = useCallback((clientY: number): number => {
     const delta = clientY - startY.current;
     const rawHeight = startHeight.current + delta;
@@ -119,14 +147,17 @@ const AnswerSpace: React.FC<AnswerSpaceProps> = ({ height = 120, onHeightChange 
   }, [handleTouchMove, handleTouchEnd]);
 
   return (
-    <div className="my-3 answer-space group">
+    <div className="my-3 answer-space group relative">
       <div
         ref={containerRef}
-        className="w-full relative rounded-lg transition-shadow duration-200 hover:shadow-md print:rounded-none print:shadow-none print:border-none"
+        className="w-full relative rounded-lg transition-shadow duration-200 hover:shadow-md print:rounded-none print:shadow-none box-border"
         style={{
           height: `${height}px`,
           backgroundColor: THEME.screen.bg,
+          // La bordure est gérée ici pour l'écran, et via print.css pour l'impression
+          // box-border assure que la bordure est incluse dans la largeur
           border: `1px solid ${THEME.screen.border}`,
+          boxSizing: 'border-box',
           overflow: 'hidden',
         }}
       >
@@ -185,9 +216,10 @@ const AnswerSpace: React.FC<AnswerSpaceProps> = ({ height = 120, onHeightChange 
           className="absolute inset-0 w-full h-full pointer-events-none hidden print:block"
           xmlns="http://www.w3.org/2000/svg"
           aria-hidden="true"
+          preserveAspectRatio="none"
           style={{
             overflow: 'hidden',
-            shapeRendering: 'crispEdges',
+            shapeRendering: 'geometricPrecision', // Meilleur rendu pour les lignes fines
           }}
         >
           {/* Fond crème doux */}
@@ -200,7 +232,7 @@ const AnswerSpace: React.FC<AnswerSpaceProps> = ({ height = 120, onHeightChange 
               x1={i * GRID_SIZE_PX}
               y1="0"
               x2={i * GRID_SIZE_PX}
-              y2={height}
+              y2="100%"
               stroke={THEME.print.gridLine}
               strokeWidth="0.5"
             />
@@ -251,9 +283,19 @@ const AnswerSpace: React.FC<AnswerSpaceProps> = ({ height = 120, onHeightChange 
           </div>
         </div>
 
-        {/* Indicateur de hauteur */}
-        <div className="absolute top-1.5 right-1.5 px-1.5 py-0.5 text-[10px] font-mono bg-black/60 text-white rounded opacity-0 group-hover:opacity-100 transition-opacity no-print select-none">
-          {height}px
+        {/* Indicateur de hauteur & Bouton Auto-Fill */}
+        <div className="absolute top-1.5 right-1.5 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity no-print">
+           <button
+            onClick={handleAutoFill}
+            className="p-1 text-[10px] bg-indigo-600 text-white rounded hover:bg-indigo-700 transition shadow-sm flex items-center gap-1"
+            title="Ajuster la hauteur pour remplir le reste de la page"
+          >
+            <Wand2 className="w-3 h-3" />
+            <span className="hidden sm:inline">Remplir</span>
+          </button>
+          <div className="px-1.5 py-0.5 text-[10px] font-mono bg-black/60 text-white rounded select-none">
+            {height}px
+          </div>
         </div>
       </div>
     </div>

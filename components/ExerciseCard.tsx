@@ -43,7 +43,7 @@ const QuestionList: React.FC<QuestionListProps> = ({ questions, level = 0, answe
         return (
           <div key={index} className="question-block">
             <div className="flex items-start gap-4">
-              <div className={`flex-shrink-0 w-6 h-6 flex items-center justify-center font-bold font-sans rounded text-xs print:border print:border-black print:bg-white print:text-black mt-1 ${level === 0 ? 'bg-blue-100 text-blue-800' : 'bg-slate-700 text-white'}`}>
+              <div className={`question-number-badge flex-shrink-0 w-6 h-6 flex items-center justify-center font-bold font-sans rounded text-xs print:border print:border-black print:bg-white print:text-black mt-1 ${level === 0 ? 'bg-blue-100 text-blue-800' : 'bg-slate-700 text-white'}`}>
                 {getNumbering(index, level)}
               </div>
               <div className="prose prose-lg max-w-none text-black print:text-black flex-1">

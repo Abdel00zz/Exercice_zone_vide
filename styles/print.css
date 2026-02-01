@@ -107,6 +107,24 @@
     font-weight: bold !important;
   }
 
+  /* Badge Numéro Question - Alignement Précis */
+  .question-number-badge {
+    width: 1.4em !important;
+    height: 1.4em !important;
+    min-width: 1.4em !important;
+    font-size: 0.9em !important;
+    line-height: 1.4em !important;
+    margin-top: 0.15em !important; /* Ajustement fin pour alignement avec le texte */
+    border: 1pt solid #000000 !important;
+    background-color: white !important;
+    color: #000000 !important;
+    border-radius: 4px !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
   /* ═══════════════════════════════════════════════════════════════
      PREMIÈRE PAGE - GARDER TITRE + CONTENU ENSEMBLE
   ═══════════════════════════════════════════════════════════════ */
@@ -129,24 +147,30 @@
   }
 
   /* ═══════════════════════════════════════════════════════════════
-     ZONES DE RÉPONSE - STYLE SEYES DOUX
-     Grille vectorielle avec couleurs harmonieuses
+     ZONES DE RÉPONSE - STYLE SEYES DOUX OPTIMISÉ
+     Bordure fine cohérente et espacement amélioré
   ═══════════════════════════════════════════════════════════════ */
   .answer-space {
-    margin-top: 2mm !important;
-    margin-bottom: 2mm !important;
+    margin-top: 6mm !important; /* Espacement augmenté entre la question et la zone */
+    margin-bottom: 3mm !important;
     page-break-inside: avoid !important;
     break-inside: avoid !important;
+    width: 100% !important; /* Forcer la largeur */
+    padding-right: 1px !important; /* Petite marge interne de sécurité */
   }
 
   .answer-space > div {
-    /* Cadre moderne Jaune Doux Très Épais */
-    border: 4pt solid #fbbf24 !important; 
-    border-radius: 6px !important; /* Légèrement arrondi */
-    background-color: #fefce8 !important;
+    /* CORRECTION BORDURE DROITE : box-sizing et width auto */
+    box-sizing: border-box !important;
+    width: 100% !important;
+    /* Bordure Standard Fine (1pt Noir) */
+    border: 1pt solid #000000 !important; 
+    border-radius: 4px !important;
+    background-color: transparent !important; /* Fond blanc standard */
     background-image: none !important;
     box-shadow: none !important;
     overflow: hidden !important;
+    display: block !important;
   }
 
   /* Masquer le SVG écran, afficher le SVG print */
@@ -157,6 +181,7 @@
   .answer-space svg.hidden.print\:block,
   .answer-space svg.hidden {
     display: block !important;
+    width: 100% !important; /* S'assurer que le SVG remplit le conteneur */
   }
 
   /* SVG haute qualité */

@@ -10,61 +10,57 @@ interface JSONEditorModalProps {
   confirmLabel?: string;
 }
 
-const GUIDE_MARKDOWN = `# Guide de Structure JSON pour Fiches d'Exercices
+const GUIDE_MARKDOWN = `# Guide de Création des Fichiers JSON pour les Fiches d'Exercices
 
-Ce format JSON permet de structurer vos fiches d'exercices.
+Ce guide a pour but de vous aider à formater correctement vos exercices dans un fichier JSON que l'application peut importer et afficher.
 
-## 1. Structure de base
-Le fichier doit contenir un objet principal avec :
-- "chapter" (texte) : Le titre de la fiche.
-- "exercises" (tableau) : Une liste de vos exercices.
+## 1. Vue d'ensemble de la Structure
 
+Le fichier JSON doit contenir un objet principal avec deux clés obligatoires :
+
+-   "chapter" (chaîne de caractères) : Le titre général de la fiche d'exercices.
+-   "exercises" (tableau) : Une liste [...] de tous vos exercices.
+
+Exemple de base :
 \`\`\`json
 {
   "chapter": "Algèbre de base",
   "exercises": [
     {
-      "id": "exo_1",
-      "title": "Introduction",
-      "statement": "Résolvez :",
+      "id": "exo_algebre_1",
+      "title": "Introduction à l'algèbre",
+      "statement": "Résolvez les équations suivantes :",
       "questions": [
-        { "text": "Trouver $x$ si $x+2=4$" }
+        { "text": "Quelle est la valeur de $x$ dans l'équation $x + 5 = 10$ ?" }
       ]
     }
   ]
 }
 \`\`\`
 
-## 2. Détails des Objets
+## 2. Détail de la Structure
 
 ### L'Objet Exercice
 Chaque exercice nécessite :
-- "id" : Identifiant unique (ex: "exo_1").
-- "title" : Titre affiché.
-- "statement" : Énoncé (peut être vide).
-- "questions" : Tableau de questions.
+-   "id" : Un identifiant unique (ex: "exo_1").
+-   "title" : Le titre de l'exercice.
+-   "statement" : L'énoncé général (peut être vide "").
+-   "questions" : Une liste de questions.
 
 ### L'Objet Question
-- "text" : Texte de la question.
-- "subquestions" : (Optionnel) Tableau de sous-questions.
+Chaque question contient :
+-   "text" : Le texte de la question.
+-   "subquestions" : (Optionnel) Tableau de sous-questions.
 
-\`\`\`json
-{
-  "text": "Étudiez la fonction $f$.",
-  "subquestions": [
-    { "text": "Dérivée $f'(x)$." },
-    { "text": "Tableau de variation." }
-  ]
-}
-\`\`\`
+## 3. Formules Mathématiques avec LaTeX
 
-## 3. Mathématiques & LaTeX
-- En ligne : $E = mc^2$
-- En bloc : $$ \\sum_{i=0}^n i $$
+-   En ligne : Entourez la formule de dollars simples : $E = mc^2$
+-   En bloc : Entourez la formule de dollars doubles : $$ \\sum_{i=1}^{n} i $$
 
-⚠️ **IMPORTANT** : En JSON, le caractère backslash "\\" est spécial. Vous devez le doubler pour écrire des commandes LaTeX.
-- Écrivez "\\\\sqrt" pour obtenir "\\sqrt".
-- Écrivez "\\\\frac" pour obtenir "\\frac".
+⚠️ **POINT CRUCIAL : L'échappement des backslashs**
+En JSON, le caractère \\ est spécial. Vous devez le doubler pour écrire des commandes LaTeX.
+-   Écrivez "\\\\sqrt" pour obtenir \\sqrt.
+-   Écrivez "\\\\frac" pour obtenir \\frac.
 `;
 
 const CodeBlock = ({ code, label }: { code: string; label?: string }) => {
