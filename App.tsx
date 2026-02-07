@@ -253,21 +253,21 @@ const App: React.FC = () => {
             onBack={handleBackToDashboard}
             onOpenSettings={() => setIsSettingsModalOpen(true)}
           />
-          <main className="container mx-auto px-4 py-8 print:p-0 print:py-0">
-            <div className="space-y-10 print:space-y-8">
-              <div className="title-and-first-exercise-container space-y-8 print:space-y-6">
-                <div className="flex flex-wrap items-start justify-between text-sm font-semibold uppercase tracking-wide text-gray-900 print:text-xs print:text-black">
-                  <span className="flex-1 text-left break-words text-gray-900 print:text-black">
-                    Classe : {classNameLabel || '—'}
+          <main className="max-w-4xl mx-auto px-4 py-8 print:max-w-none print:p-0 print:py-0">
+            <div className="space-y-8 print:space-y-6">
+              <div className="title-and-first-exercise-container space-y-6 print:space-y-4">
+                <div className="flex flex-wrap items-start justify-between text-xs font-semibold uppercase tracking-wider text-slate-500 print:text-[9pt] print:text-black">
+                  <span className="text-left break-words">
+                    Classe : {classNameLabel || '\u2014'}
                   </span>
-                  <span className="flex-1 text-right break-words text-gray-900 print:text-black">
-                    Année scolaire : {schoolYearLabel}
+                  <span className="text-right break-words">
+                    {schoolYearLabel}
                   </span>
                 </div>
 
                 {selectedWorksheet.content.chapter && (
-                  <div className="text-center">
-                    <h1 className="text-6xl font-bold font-display text-red-600 print:text-4xl print:mb-0">
+                  <div className="text-center py-2 print:py-0">
+                    <h1 className="text-4xl md:text-5xl font-bold font-display text-slate-900 print:text-3xl print:mb-0 tracking-tight">
                       {selectedWorksheet.content.chapter}
                     </h1>
                   </div>
