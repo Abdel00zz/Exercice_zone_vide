@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import type { Worksheet, WorksheetContent } from '../types';
-import { GripVertical, Trash2, X, UploadCloud, ImageOff } from 'lucide-react';
+import { GripVertical, Trash2, X, UploadCloud, ImageOff, Info, Image, LayoutTemplate, ListOrdered } from 'lucide-react';
 
 const CLASS_OPTIONS = [
 	'Tronc Commun Scientifique',
@@ -226,13 +226,13 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, workshee
 				onClick={e => e.stopPropagation()}
 			>
 				<header className="flex justify-between items-center px-6 py-4 border-b border-slate-200">
-					<h2 className="text-lg font-bold font-display text-slate-800">Parametres</h2>
+					<h2 className="text-lg font-bold font-display text-slate-800">Paramètres</h2>
 					<button onClick={onClose} className="p-1.5 rounded-md hover:bg-slate-100 transition" aria-label="Fermer">
 						<X className="h-5 w-5 text-slate-500" />
 					</button>
 				</header>
 
-			<main className="p-6 overflow-y-auto text-gray-900">
+			<main className="p-6 overflow-y-auto text-gray-900 custom-scrollbar">
 					<input
 						ref={logoInputRef}
 						type="file"
@@ -241,19 +241,25 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, workshee
 						onChange={handleLogoInputChange}
 					/>
 					<div className="space-y-10">
+						{/* Informations Générales */}
 						<section className="space-y-4">
-											<div>
-												<h3 className="text-lg font-semibold text-gray-900">Informations générales</h3>
-												<p className="text-sm text-gray-900">Ces informations s'afficheront automatiquement en haut de votre fiche imprimée.</p>
+							<div className="flex items-start gap-3">
+								<div className="p-2 bg-blue-50 text-blue-600 rounded-lg shrink-0">
+									<Info className="h-5 w-5" />
+								</div>
+								<div>
+									<h3 className="text-lg font-semibold text-gray-900">Informations générales</h3>
+									<p className="text-sm text-slate-500">Ces informations s'afficheront en haut de la fiche imprimée.</p>
+								</div>
 							</div>
-							<div className="grid gap-6 md:grid-cols-2">
+							<div className="grid gap-6 md:grid-cols-2 ml-0 md:ml-12">
 								<div>
 									  <label htmlFor="class-select" className="block text-sm font-medium text-gray-900 mb-2">Classe</label>
 									<select
 										id="class-select"
 										value={selectedClass}
 										onChange={(e) => handleClassChange(e.target.value)}
-										className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-200"
+										className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-200 transition"
 									>
 										<option value="">— Sélectionner —</option>
 										{CLASS_OPTIONS.map(option => (
@@ -269,63 +275,77 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, workshee
 										placeholder="2025-2026"
 										value={selectedSchoolYear}
 										onChange={(e) => handleSchoolYearChange(e.target.value)}
-										className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-200"
+										className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-200 transition"
 									/>
 								</div>
 							</div>
 						</section>
 
+						{/* Identité Visuelle */}
 						<section className="space-y-4">
-							<div>
-								<h3 className="text-lg font-semibold text-gray-900">Identité visuelle</h3>
-								<p className="text-sm text-gray-900">Déposez un logo (PNG, JPG ou SVG) ou cliquez pour le sélectionner. Taille maximale : 2 Mo.</p>
-							</div>
-							<div
-								className={`flex flex-col items-center justify-center gap-3 border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition ${isLogoDragOver ? 'border-indigo-500 bg-indigo-50 text-indigo-600' : 'border-gray-300 bg-gray-50 hover:border-indigo-400 hover:bg-indigo-50'}`}
-								onClick={() => logoInputRef.current?.click()}
-								onDrop={handleLogoDrop}
-								onDragOver={handleLogoDragOver}
-								onDragLeave={handleLogoDragLeave}
-								role="button"
-								tabIndex={0}
-								onKeyDown={(e) => {
-									if (e.key === 'Enter' || e.key === ' ') {
-										e.preventDefault();
-										logoInputRef.current?.click();
-									}
-								}}
-								aria-label="Zone de dépôt pour le logo"
-							>
-								<UploadCloud className="h-8 w-8" />
-								<div>
-									<p className="text-sm font-semibold">Glissez-déposez votre logo ici</p>
-									  <p className="text-xs text-gray-900">ou cliquez pour parcourir vos fichiers</p>
+							<div className="flex items-start gap-3">
+								<div className="p-2 bg-purple-50 text-purple-600 rounded-lg shrink-0">
+									<Image className="h-5 w-5" />
 								</div>
-								{logoPreview && (
-									<div className="mt-4 w-full max-w-xs rounded-md border border-gray-200 bg-white p-3">
-										<img src={logoPreview} alt="Logo téléchargé" className="mx-auto max-h-32 w-full object-contain" />
+								<div>
+									<h3 className="text-lg font-semibold text-gray-900">Identité visuelle</h3>
+									<p className="text-sm text-slate-500">Personnalisez l'en-tête avec votre logo (PNG, JPG ou SVG).</p>
+								</div>
+							</div>
+							<div className="ml-0 md:ml-12">
+								<div
+									className={`flex flex-col items-center justify-center gap-3 border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition ${isLogoDragOver ? 'border-indigo-500 bg-indigo-50 text-indigo-600' : 'border-gray-300 bg-gray-50 hover:border-indigo-400 hover:bg-indigo-50'}`}
+									onClick={() => logoInputRef.current?.click()}
+									onDrop={handleLogoDrop}
+									onDragOver={handleLogoDragOver}
+									onDragLeave={handleLogoDragLeave}
+									role="button"
+									tabIndex={0}
+									onKeyDown={(e) => {
+										if (e.key === 'Enter' || e.key === ' ') {
+											e.preventDefault();
+											logoInputRef.current?.click();
+										}
+									}}
+									aria-label="Zone de dépôt pour le logo"
+								>
+									<UploadCloud className="h-8 w-8" />
+									<div>
+										<p className="text-sm font-semibold">Glissez-déposez votre logo ici</p>
+										<p className="text-xs text-gray-500 mt-1">ou cliquez pour parcourir vos fichiers</p>
 									</div>
+									{logoPreview && (
+										<div className="mt-4 w-full max-w-xs rounded-md border border-gray-200 bg-white p-3 relative group">
+											<img src={logoPreview} alt="Logo téléchargé" className="mx-auto max-h-32 w-full object-contain" />
+										</div>
+									)}
+								</div>
+								{logoError && <p className="text-sm text-red-600 mt-2">{logoError}</p>}
+								{logoPreview && (
+									<button
+										type="button"
+										onClick={handleRemoveLogo}
+										className="mt-3 inline-flex items-center gap-2 rounded-lg border border-gray-300 px-3 py-1.5 text-xs font-medium text-gray-600 hover:border-red-400 hover:text-red-500 hover:bg-red-50 transition"
+									>
+										<ImageOff className="h-3.5 w-3.5" />
+										Retirer le logo
+									</button>
 								)}
 							</div>
-							{logoError && <p className="text-sm text-red-600">{logoError}</p>}
-							{logoPreview && (
-								<button
-									type="button"
-									onClick={handleRemoveLogo}
-									className="inline-flex items-center gap-2 rounded-lg border border-gray-300 px-3 py-2 text-sm font-medium text-gray-600 hover:border-red-400 hover:text-red-500 hover:bg-red-50 transition"
-								>
-									<ImageOff className="h-4 w-4" />
-									Retirer le logo
-								</button>
-							)}
 						</section>
 
+						{/* Zones de réponse */}
 						<section className="space-y-4">
-											<div>
-												<h3 className="text-lg font-semibold text-gray-900">Zones de réponse</h3>
-												<p className="text-sm text-gray-900">Définissez la hauteur par défaut des zones de réponse. Vous pourrez ensuite ajuster chaque question individuellement.</p>
+							<div className="flex items-start gap-3">
+								<div className="p-2 bg-amber-50 text-amber-600 rounded-lg shrink-0">
+									<LayoutTemplate className="h-5 w-5" />
+								</div>
+								<div>
+									<h3 className="text-lg font-semibold text-gray-900">Zones de réponse</h3>
+									<p className="text-sm text-slate-500">Hauteur par défaut des zones quadrillées.</p>
+								</div>
 							</div>
-							<div className="flex items-center gap-4">
+							<div className="flex items-center gap-4 ml-0 md:ml-12 bg-white p-4 rounded-lg border border-slate-200">
 								<input
 									id="answer-height"
 									type="range"
@@ -336,22 +356,28 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, workshee
 									onChange={handleHeightChange}
 									className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
 								/>
-								<label htmlFor="answer-height" className="font-sans font-semibold text-slate-600 w-16 text-center">
+								<label htmlFor="answer-height" className="font-mono font-bold text-indigo-600 w-16 text-center text-lg">
 									{editableContent.settings?.answerSpaceMinHeight || 120}px
 								</label>
 							</div>
 						</section>
 
+						{/* Organisation */}
 						<section className="space-y-4">
-											<div>
-												<h3 className="text-lg font-semibold text-gray-900">Organisation des exercices</h3>
-												<p className="text-sm text-gray-900">Glissez-déposez pour réordonner vos exercices ou supprimez ceux qui ne sont plus nécessaires.</p>
+							<div className="flex items-start gap-3">
+								<div className="p-2 bg-emerald-50 text-emerald-600 rounded-lg shrink-0">
+									<ListOrdered className="h-5 w-5" />
+								</div>
+								<div>
+									<h3 className="text-lg font-semibold text-gray-900">Organisation des exercices</h3>
+									<p className="text-sm text-slate-500">Réordonnez ou supprimez des exercices.</p>
+								</div>
 							</div>
-							<div className="space-y-2">
+							<div className="space-y-2 ml-0 md:ml-12">
 								{editableContent.exercises.map((ex, index) => (
 									<div
 										key={ex.id || index}
-										className="flex items-center justify-between p-3 bg-gray-50 border border-gray-200 rounded-lg"
+										className="flex items-center justify-between p-3 bg-white border border-gray-200 rounded-lg hover:border-indigo-300 hover:shadow-sm transition group"
 										draggable
 										onDragStart={(e) => handleDragStart(e, index)}
 										onDragEnter={(e) => handleDragEnter(e, index)}
@@ -360,15 +386,17 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, workshee
 										onDragEnd={handleDragEnd}
 									>
 										<div className="flex items-center gap-3">
-											<GripVertical className="h-5 w-5 text-gray-400 cursor-move" />
-											<span className="font-medium text-gray-800 truncate">{index + 1}. {ex.title}</span>
+											<div className="p-1 text-gray-300 group-hover:text-indigo-400 cursor-move transition">
+												<GripVertical className="h-5 w-5" />
+											</div>
+											<span className="font-medium text-slate-700 truncate">{index + 1}. {ex.title}</span>
 										</div>
 										<button
 											onClick={() => handleDeleteExercise(index)}
-											  className="p-2 text-gray-800 hover:text-red-600 rounded-full hover:bg-red-100 transition"
+											  className="p-2 text-slate-400 hover:text-red-600 rounded-full hover:bg-red-50 transition"
 											aria-label="Supprimer l'exercice"
 										>
-											<Trash2 className="h-5 w-5" />
+											<Trash2 className="h-4 w-4" />
 										</button>
 									</div>
 								))}
@@ -378,10 +406,10 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, workshee
 				</main>
 
 			<footer className="flex justify-end items-center gap-2.5 px-6 py-4 border-t border-slate-200 bg-slate-50/50 rounded-b-xl">
-					<button onClick={onClose} className="px-4 py-2 text-sm text-slate-600 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 font-medium transition">
+					<button onClick={onClose} className="px-4 py-2 text-sm text-slate-600 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 font-medium transition shadow-sm">
 						Annuler
 					</button>
-					<button onClick={handleSave} className="px-4 py-2 text-sm text-white bg-slate-900 rounded-lg hover:bg-slate-800 font-medium transition">
+					<button onClick={handleSave} className="px-4 py-2 text-sm text-white bg-slate-900 rounded-lg hover:bg-slate-800 font-medium transition shadow-md hover:shadow-lg">
 						Enregistrer
 					</button>
 				</footer>
@@ -391,4 +419,3 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, workshee
 };
 
 export default SettingsModal;
-

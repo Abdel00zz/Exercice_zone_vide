@@ -95,51 +95,63 @@
     line-height: 1 !important;
   }
 
+  /* ESPACE AUGMENTÉ ENTRE TITRE ET CONTENU */
   .exercise-title {
-    margin-bottom: 3mm !important;
+    margin-bottom: 7mm !important; /* Espace significatif */
     font-size: 11pt !important;
     line-height: 1.3 !important;
     display: flex !important;
     align-items: center !important;
-    gap: 4mm !important; /* Espace augmenté titre/badge */
+    gap: 4mm !important;
+    border-bottom: 0.5pt solid #eee !important; /* Petit séparateur chic optionnel */
+    padding-bottom: 2mm !important;
   }
 
   /* ══════════════════════════════════════════════
-     QUESTION BADGES — INTELLIGENT ALIGNMENT
+     QUESTION BADGES — CHIC & PRO STYLE
   ══════════════════════════════════════════════ */
   .question-number-badge {
-    /* Keep the inline background-color and color */
-    flex-shrink: 0 !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    font-weight: 700 !important;
-    line-height: 1 !important;
-    padding: 0 !important;
-    /* Print borders */
-    border: 0.5pt solid #000 !important;
-    background-color: white !important;
+    /* Reset du style "badge carré" pour l'impression */
+    background-color: transparent !important;
+    border: none !important;
     color: #000 !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    
+    /* Typographie Chic */
+    font-family: 'Playfair Display', serif !important;
+    font-weight: 700 !important;
+    font-size: 11pt !important; /* Même taille que le texte, mais gras/serif */
+    
+    /* Layout */
+    display: flex !important;
+    align-items: flex-start !important;
+    justify-content: flex-end !important;
+    width: 1.5em !important;
+    margin-top: 0 !important;
+    flex-shrink: 0 !important;
   }
 
-  /* Level 0: numbered badges */
+  /* Ajout d'un point après le numéro pour le style classique */
+  .question-number-badge::after {
+    content: "." !important;
+    margin-left: 1px;
+  }
+
+  /* Level 0: Nombres */
   .question-badge-level-0 {
-    width: 1.4em !important;
-    height: 1.4em !important;
-    min-width: 1.4em !important;
-    font-size: 0.85em !important;
-    border-radius: 3pt !important;
-    margin-top: 0.1em !important; /* Alignment tweak */
+    font-size: 11pt !important;
   }
 
-  /* Level 1: lettered badges (circle) */
+  /* Level 1: Lettres (a, b...) */
   .question-badge-level-1 {
-    width: 1.3em !important;
-    height: 1.3em !important;
-    min-width: 1.3em !important;
-    font-size: 0.8em !important;
-    border-radius: 50% !important;
-    margin-top: 0.15em !important; /* Alignment tweak */
+    font-size: 11pt !important;
+    font-style: italic !important; /* Lettres en italique pour le style math */
+  }
+  
+  /* Pour les lettres, on peut vouloir une parenthèse au lieu d'un point */
+  .question-badge-level-1::after {
+    content: ")" !important;
   }
 
   /* ══════════════════════════════════════════════
@@ -234,7 +246,7 @@
   .exercise-card .exercise-title {
     page-break-after: avoid !important;
     break-after: avoid !important;
-    margin-bottom: 2mm !important;
+    /* Margin defined above */
   }
 
   .exercise-statement {
