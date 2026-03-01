@@ -70,33 +70,34 @@ const QuestionList: React.FC<QuestionListProps> = ({ questions, level = 0, answe
                   alignItems: 'center',
                   justifyContent: 'center',
                   fontWeight: 700,
-                  fontFamily: '"Playfair Display", serif',
+                  fontFamily: '"IBM Plex Serif", serif',
                   lineHeight: 1,
                   WebkitPrintColorAdjust: 'exact',
                   printColorAdjust: 'exact' as any,
                   // Styles spécifiques au niveau
                   ...(level === 0
                     ? {
-                        width: '2rem',
-                        height: '2rem',
-                        fontSize: '0.9rem',
-                        borderRadius: '50%',
-                        backgroundColor: '#000000',
-                        color: '#ffffff',
-                        border: 'none',
+                        width: '2.2rem',
+                        height: '2.2rem',
+                        fontSize: '1.1rem',
+                        borderRadius: '2px',
+                        backgroundColor: '#ffffff',
+                        color: '#000000',
+                        border: '1.5px solid #000000',
                         marginTop: '-0.2rem', // Alignement optique avec le texte
-                        boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                        boxShadow: 'none'
                       }
                     : {
                         width: 'auto',
                         height: 'auto',
-                        fontSize: '1rem',
+                        fontSize: '1.1rem',
                         borderRadius: '0',
                         backgroundColor: 'transparent',
                         color: '#000000',
                         border: 'none',
-                        marginTop: '0',
-                        fontStyle: 'italic',
+                        marginTop: '0.1rem',
+                        fontStyle: 'normal',
+                        fontWeight: 600,
                         paddingRight: '0.5rem'
                       }
                   ),
@@ -149,18 +150,19 @@ const QuestionList: React.FC<QuestionListProps> = ({ questions, level = 0, answe
 const ExerciseCard: React.FC<ExerciseCardProps> = ({ exercise, exerciseNumber, answerSpaceMinHeight, onQuestionUpdate, onExerciseUpdate }) => {
   return (
     <div className="exercise-card bg-white text-black p-6 md:p-10 rounded-xl shadow-sm mb-10 print:shadow-none print:rounded-none print:bg-transparent print:text-black print:p-0 print:mb-6 border border-slate-100 print:border-none">
-      <h2 className="exercise-title text-xl font-bold font-display text-slate-800 print:text-black flex flex-col items-start gap-3 mb-8 print:mb-5 pt-2">
+      <h2 className="exercise-title text-xl font-bold font-display text-slate-900 print:text-black flex flex-col items-start gap-3 mb-8 print:mb-5 pt-2">
         <span 
-          className="exercise-badge font-bold uppercase tracking-widest shadow-md"
+          className="exercise-badge font-bold uppercase tracking-widest shadow-none"
           style={{
-            backgroundColor: '#000000',
-            color: '#ffffff',
-            fontSize: '0.75rem',
+            backgroundColor: '#ffffff',
+            color: '#000000',
+            fontSize: '0.8rem',
             padding: '0.4rem 0.8rem',
-            borderRadius: '4px',
+            borderRadius: '2px',
+            border: '1.5px solid #000000',
             display: 'inline-flex',
             alignItems: 'center',
-            fontFamily: '"Playfair Display", serif',
+            fontFamily: '"IBM Plex Sans", sans-serif',
             WebkitPrintColorAdjust: 'exact',
             printColorAdjust: 'exact' as any,
             lineHeight: 1,

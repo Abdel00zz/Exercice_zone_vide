@@ -299,9 +299,9 @@ const App: React.FC = () => {
               ))}
 
               {!hasExercises && (
-                <div className="text-center py-16">
-                  <h2 className="text-2xl font-semibold text-gray-500">Cette fiche ne contient aucun exercice.</h2>
-                  <p className="text-gray-400 mt-2">Vous pouvez en ajouter en modifiant le fichier source.</p>
+                <div className="text-center py-20 border-2 border-dashed border-slate-300 bg-slate-50">
+                  <h2 className="text-xl font-semibold text-slate-600">Cette fiche ne contient aucun exercice.</h2>
+                  <p className="text-slate-500 mt-2">Vous pouvez en ajouter en modifiant le fichier source JSON.</p>
                 </div>
               )}
 
@@ -330,8 +330,8 @@ const App: React.FC = () => {
         </>
       ) : (
         <div className="text-center py-16">
-            <h2 className="text-2xl font-semibold text-gray-500">Fiche non trouvée.</h2>
-            <button onClick={handleBackToDashboard} className="mt-4 bg-indigo-600 text-white px-6 py-2 rounded-lg">Retour au Dashboard</button>
+            <h2 className="text-2xl font-semibold text-slate-500">Fiche non trouvée.</h2>
+            <button onClick={handleBackToDashboard} className="mt-6 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-none transition shadow-sm font-medium">Retour au Dashboard</button>
         </div>
       )}
     

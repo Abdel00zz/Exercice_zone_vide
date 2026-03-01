@@ -83,11 +83,12 @@
      EXERCISE BADGE — CHIC STYLE
   ══════════════════════════════════════════════ */
   .exercise-badge {
-    background-color: #000 !important;
-    color: #fff !important;
+    background-color: #fff !important;
+    color: #000 !important;
+    border: 1.5pt solid #000 !important;
     padding: 1.5mm 3mm !important;
     border-radius: 1mm !important;
-    font-family: 'Playfair Display', serif !important;
+    font-family: 'IBM Plex Sans', sans-serif !important;
     font-weight: 700 !important;
     font-size: 9pt !important;
     letter-spacing: 0.05em !important;
@@ -118,7 +119,7 @@
      QUESTION BADGES — CHIC & PRO STYLE
   ══════════════════════════════════════════════ */
   .question-number-badge {
-    font-family: 'Playfair Display', serif !important;
+    font-family: 'IBM Plex Serif', serif !important;
     font-weight: 700 !important;
     display: flex !important;
     align-items: center !important;
@@ -127,26 +128,28 @@
     flex-shrink: 0 !important;
   }
 
-  /* Level 0: Black Circle */
+  /* Level 0: Elegant Square */
   .question-badge-level-0 {
-    background-color: #000 !important;
-    color: #fff !important;
-    border-radius: 50% !important;
-    width: 1.7em !important;
-    height: 1.7em !important;
-    font-size: 10pt !important;
+    background-color: #fff !important;
+    color: #000 !important;
+    border: 1.5pt solid #000 !important;
+    border-radius: 1mm !important;
+    width: 2.2em !important;
+    height: 2.2em !important;
+    font-size: 11pt !important;
     padding: 0 !important;
-    margin-top: -0.1em !important;
+    margin-top: -0.2em !important;
   }
   
   .question-badge-level-0::after {
     content: "" !important;
   }
 
-  /* Level 1: Italic Text */
+  /* Level 1: Bold Text */
   .question-badge-level-1 {
     font-size: 11pt !important;
-    font-style: italic !important;
+    font-style: normal !important;
+    font-weight: 600 !important;
     background-color: transparent !important;
     color: #000 !important;
     justify-content: flex-start !important;

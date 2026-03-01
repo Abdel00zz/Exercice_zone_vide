@@ -118,36 +118,36 @@ const Dashboard: React.FC<DashboardProps> = ({
     }, [worksheets, searchQuery]);
 
     return (
-        <div className="min-h-screen" style={{ backgroundColor: '#f8fafc' }}>
-            <div className="max-w-5xl mx-auto px-5 py-10 md:px-8">
+        <div className="min-h-screen bg-slate-50">
+            <div className="max-w-6xl mx-auto px-6 py-12 md:px-10">
 
             {/* ── Header ── */}
-            <header className="mb-10">
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-5">
+            <header className="mb-12 border-b border-slate-200 pb-6">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6">
                     <div>
-                        <h1 className="text-2xl md:text-3xl font-bold font-display text-slate-900 tracking-tight">Mes Fiches</h1>
-                        <p className="text-slate-400 mt-1 text-sm">{worksheets.length} fiche{worksheets.length !== 1 ? 's' : ''}</p>
+                        <h1 className="text-3xl md:text-4xl font-semibold font-display text-slate-900 tracking-tight">Mes Fiches d'Exercices</h1>
+                        <p className="text-slate-500 mt-2 text-base">{worksheets.length} fiche{worksheets.length !== 1 ? 's' : ''} disponible{worksheets.length !== 1 ? 's' : ''}</p>
                     </div>
-                    <div className="flex items-center gap-2 w-full sm:w-auto">
+                    <div className="flex items-center gap-3 w-full sm:w-auto">
                         <div className="relative flex-grow sm:flex-grow-0">
-                            <Search className="h-4 w-4 text-slate-400 absolute top-1/2 left-3 -translate-y-1/2 pointer-events-none" />
+                            <Search className="h-5 w-5 text-slate-400 absolute top-1/2 left-3.5 -translate-y-1/2 pointer-events-none" />
                             <input
                                 type="text"
                                 placeholder="Rechercher..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                className="w-full sm:w-52 pl-9 pr-3 py-2 rounded-lg border border-slate-200 bg-white text-sm focus:ring-2 focus:ring-slate-900/10 focus:border-slate-300 transition placeholder:text-slate-400 outline-none"
+                                className="w-full sm:w-64 pl-10 pr-4 py-2.5 rounded-none border border-slate-300 bg-white text-base focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 transition placeholder:text-slate-400 outline-none"
                                 aria-label="Rechercher une fiche par nom"
                             />
                         </div>
                         
                         <button
                             onClick={handleOpenCreateJson}
-                            className="p-2 border border-slate-200 bg-white text-slate-500 hover:text-slate-800 hover:border-slate-300 rounded-lg transition shrink-0"
+                            className="p-2.5 border border-slate-300 bg-white text-slate-600 hover:text-blue-600 hover:border-blue-600 rounded-none transition shrink-0"
                             title="Editeur JSON"
                             aria-label="Editeur JSON"
                         >
-                            <Code className="h-4 w-4" />
+                            <Code className="h-5 w-5" />
                         </button>
 
                         <input
@@ -160,10 +160,10 @@ const Dashboard: React.FC<DashboardProps> = ({
                         />
                         <label
                             htmlFor="json-importer"
-                            className="flex items-center bg-slate-900 hover:bg-slate-800 text-white font-medium py-2 px-3.5 rounded-lg cursor-pointer transition shrink-0 text-sm gap-1.5"
+                            className="flex items-center bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-5 rounded-none cursor-pointer transition shrink-0 text-base gap-2 shadow-sm"
                         >
-                            <FileUp className="h-4 w-4" />
-                            <span>Importer</span>
+                            <FileUp className="h-5 w-5" />
+                            <span>Importer JSON</span>
                         </label>
                     </div>
                 </div>
@@ -171,7 +171,7 @@ const Dashboard: React.FC<DashboardProps> = ({
             
             {/* ── Cards grid ── */}
             {filteredWorksheets.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {filteredWorksheets.map((ws) => {
                         const classNameLabel = ws.content?.settings?.className?.trim() || '';
                         const exerciseCount = ws.content?.exercises?.length || 0;
@@ -179,14 +179,14 @@ const Dashboard: React.FC<DashboardProps> = ({
                         return (
                             <div 
                                 key={ws.id} 
-                                className="group bg-white rounded-lg border border-slate-200 hover:border-slate-300 flex flex-col transition-all duration-150 hover:shadow-md cursor-pointer"
+                                className="group bg-white rounded-none border border-slate-300 hover:border-blue-600 flex flex-col transition-all duration-200 hover:shadow-lg cursor-pointer min-h-[200px]"
                                 onClick={() => onSelectWorksheet(ws.id)}
                                 onDoubleClick={(e) => { e.stopPropagation(); handleEditJson(ws); }}
                                 title="Cliquez pour ouvrir"
                             >
-                               <div className="p-4 flex-1 flex flex-col">
+                               <div className="p-6 flex-1 flex flex-col">
                                    {/* Title + actions row */}
-                                   <div className="flex items-start justify-between gap-2 mb-3">
+                                   <div className="flex items-start justify-between gap-3 mb-4">
                                        {renamingId === ws.id ? (
                                            <form onSubmit={handleSaveRename} onClick={(e) => e.stopPropagation()} className="flex-1">
                                                <input 
@@ -195,58 +195,58 @@ const Dashboard: React.FC<DashboardProps> = ({
                                                    onChange={(e) => setNewName(e.target.value)}
                                                    onBlur={handleSaveRename}
                                                    autoFocus
-                                                   className="text-sm font-bold font-display text-slate-800 w-full border-b-2 border-slate-900 focus:outline-none bg-transparent pb-0.5"
+                                                   className="text-lg font-semibold font-display text-slate-900 w-full border-b-2 border-blue-600 focus:outline-none bg-transparent pb-1"
                                                />
                                            </form>
                                        ) : (
-                                           <h2 className="text-sm font-bold font-display text-slate-900 leading-snug line-clamp-2 flex-1">
+                                           <h2 className="text-lg font-semibold font-display text-slate-900 leading-snug line-clamp-2 flex-1 group-hover:text-blue-700 transition-colors">
                                                {ws.name}
                                            </h2>
                                        )}
 
                                        {/* Hover actions */}
-                                       <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity shrink-0" onClick={(e) => e.stopPropagation()}>
+                                       <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0" onClick={(e) => e.stopPropagation()}>
                                            <button 
                                                onClick={() => handleRename(ws)} 
-                                               className="p-1 text-slate-400 hover:text-slate-700 rounded transition" 
+                                               className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded transition" 
                                                aria-label="Renommer"
                                            >
-                                               <Pencil className="h-3.5 w-3.5" />
+                                               <Pencil className="h-4 w-4" />
                                            </button>
                                            <button 
                                                onClick={() => handleEditJson(ws)} 
-                                               className="p-1 text-slate-400 hover:text-slate-700 rounded transition" 
+                                               className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded transition" 
                                                aria-label="Editer JSON"
                                            >
-                                               <Code className="h-3.5 w-3.5" />
+                                               <Code className="h-4 w-4" />
                                            </button>
                                            <button 
                                                onClick={() => onDeleteWorksheet(ws.id)} 
-                                               className="p-1 text-slate-400 hover:text-red-600 rounded transition" 
+                                               className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded transition" 
                                                aria-label="Supprimer"
                                            >
-                                               <Trash2 className="h-3.5 w-3.5" />
+                                               <Trash2 className="h-4 w-4" />
                                            </button>
                                        </div>
                                    </div>
 
                                    {/* Meta info */}
-                                   <div className="mt-auto pt-2 flex items-center justify-between text-xs text-slate-400">
-                                       <div className="flex items-center gap-3">
-                                           <span className="flex items-center gap-1">
-                                               <FileText className="h-3 w-3" />
+                                   <div className="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between text-sm text-slate-500">
+                                       <div className="flex items-center gap-4">
+                                           <span className="flex items-center gap-1.5 font-medium">
+                                               <FileText className="h-4 w-4 text-slate-400" />
                                                {exerciseCount} ex.
                                            </span>
                                            {classNameLabel && (
-                                               <span className="truncate max-w-[120px]">{classNameLabel}</span>
+                                               <span className="truncate max-w-[120px] bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-600">{classNameLabel}</span>
                                            )}
                                        </div>
-                                       <div className="flex items-center gap-1.5">
-                                           <span className="flex items-center gap-1">
-                                               <Calendar className="h-3 w-3" />
+                                       <div className="flex items-center gap-2">
+                                           <span className="flex items-center gap-1.5">
+                                               <Calendar className="h-4 w-4 text-slate-400" />
                                                {new Date(ws.createdAt).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })}
                                            </span>
-                                           <ChevronRight className="h-3.5 w-3.5 text-slate-300 group-hover:text-slate-500 transition-colors" />
+                                           <ChevronRight className="h-4 w-4 text-slate-300 group-hover:text-blue-600 transition-colors" />
                                        </div>
                                    </div>
                                </div>
@@ -257,27 +257,27 @@ const Dashboard: React.FC<DashboardProps> = ({
                     {/* "New" card */}
                     <div 
                         onClick={handleOpenCreateJson}
-                        className="group rounded-lg border-2 border-dashed border-slate-200 hover:border-slate-300 flex items-center justify-center cursor-pointer transition-all min-h-[100px] bg-white/50 hover:bg-white"
+                        className="group rounded-none border-2 border-dashed border-slate-300 hover:border-blue-600 flex items-center justify-center cursor-pointer transition-all min-h-[200px] bg-white hover:bg-blue-50/50"
                     >
-                        <div className="flex flex-col items-center gap-1.5 text-slate-400 group-hover:text-slate-600 transition-colors">
-                            <Plus className="h-5 w-5" />
-                            <span className="text-xs font-medium">Nouvelle fiche</span>
+                        <div className="flex flex-col items-center gap-3 text-slate-500 group-hover:text-blue-600 transition-colors">
+                            <Plus className="h-8 w-8" />
+                            <span className="text-base font-medium">Créer une nouvelle fiche</span>
                         </div>
                     </div>
                 </div>
             ) : (
-                <div className="text-center py-20 border-2 border-dashed border-slate-200 rounded-xl bg-white">
+                <div className="text-center py-24 border-2 border-dashed border-slate-300 rounded-none bg-white">
                     {searchQuery ? (
                         <>
-                            <Search className="h-8 w-8 text-slate-300 mx-auto mb-3" />
-                            <h2 className="text-lg font-semibold text-slate-500">Aucun resultat</h2>
-                            <p className="text-slate-400 mt-1 text-sm">Essayez avec d'autres mots-cles.</p>
+                            <Search className="h-10 w-10 text-slate-300 mx-auto mb-4" />
+                            <h2 className="text-xl font-semibold text-slate-600">Aucun résultat</h2>
+                            <p className="text-slate-500 mt-2 text-base">Essayez avec d'autres mots-clés.</p>
                         </>
                     ) : (
                         <>
-                            <FileText className="h-8 w-8 text-slate-300 mx-auto mb-3" />
-                            <h2 className="text-lg font-semibold text-slate-500">Aucune fiche</h2>
-                            <p className="text-slate-400 mt-1 text-sm">Importez un fichier JSON pour commencer.</p>
+                            <FileText className="h-10 w-10 text-slate-300 mx-auto mb-4" />
+                            <h2 className="text-xl font-semibold text-slate-600">Aucune fiche</h2>
+                            <p className="text-slate-500 mt-2 text-base">Importez un fichier JSON ou créez une nouvelle fiche pour commencer.</p>
                         </>
                     )}
                 </div>
