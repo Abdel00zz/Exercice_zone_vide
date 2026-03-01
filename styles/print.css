@@ -61,8 +61,8 @@
     margin: 0 !important;
   }
 
-  .space-y-10 > * + * { margin-top: 5mm !important; }
-  .space-y-8 > * + * { margin-top: 3mm !important; }
+  .space-y-10 > * + * { margin-top: 6mm !important; }
+  .space-y-8 > * + * { margin-top: 4mm !important; }
 
   /* ── Typography — pure black ── */
   h1, h2, h3, h4, h5, h6, p, span, div, li, strong, em,
@@ -74,84 +74,89 @@
   h1 {
     margin-top: 0 !important;
     padding-top: 0 !important;
-    margin-bottom: 4mm !important;
-    font-size: 18pt !important;
+    margin-bottom: 5mm !important;
+    font-size: 20pt !important;
     letter-spacing: -0.01em;
   }
 
   /* ══════════════════════════════════════════════
-     EXERCISE BADGE — COMPACT & TIGHT
+     EXERCISE BADGE — CHIC STYLE
   ══════════════════════════════════════════════ */
   .exercise-badge {
     background-color: #000 !important;
     color: #fff !important;
-    padding: 0.8mm 2mm !important; /* Serré */
+    padding: 1.5mm 3mm !important;
     border-radius: 1mm !important;
-    font-weight: 800 !important;
-    font-size: 8pt !important;
+    font-family: 'Playfair Display', serif !important;
+    font-weight: 700 !important;
+    font-size: 9pt !important;
     letter-spacing: 0.05em !important;
     display: inline-flex !important;
     align-items: center !important;
     line-height: 1 !important;
+    box-shadow: none !important;
   }
 
-  /* ESPACE AUGMENTÉ ENTRE TITRE ET CONTENU */
+  /* TITRE EXERCICE */
   .exercise-title {
-    margin-bottom: 7mm !important; /* Espace significatif */
-    font-size: 11pt !important;
-    line-height: 1.3 !important;
+    margin-bottom: 5mm !important;
+    font-size: 14pt !important;
+    line-height: 1.2 !important;
     display: flex !important;
-    align-items: center !important;
-    gap: 4mm !important;
-    border-bottom: 0.5pt solid #eee !important; /* Petit séparateur chic optionnel */
-    padding-bottom: 2mm !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 2mm !important;
+    padding-bottom: 0 !important;
+    border: none !important;
+  }
+  
+  .exercise-title > span:last-child {
+    font-size: 16pt !important;
   }
 
   /* ══════════════════════════════════════════════
      QUESTION BADGES — CHIC & PRO STYLE
   ══════════════════════════════════════════════ */
   .question-number-badge {
-    /* Reset du style "badge carré" pour l'impression */
-    background-color: transparent !important;
-    border: none !important;
-    color: #000 !important;
-    padding: 0 !important;
-    border-radius: 0 !important;
-    
-    /* Typographie Chic */
     font-family: 'Playfair Display', serif !important;
     font-weight: 700 !important;
-    font-size: 11pt !important; /* Même taille que le texte, mais gras/serif */
-    
-    /* Layout */
     display: flex !important;
-    align-items: flex-start !important;
-    justify-content: flex-end !important;
-    width: 1.5em !important;
+    align-items: center !important;
+    justify-content: center !important;
     margin-top: 0 !important;
     flex-shrink: 0 !important;
   }
 
-  /* Ajout d'un point après le numéro pour le style classique */
-  .question-number-badge::after {
-    content: "." !important;
-    margin-left: 1px;
-  }
-
-  /* Level 0: Nombres */
+  /* Level 0: Black Circle */
   .question-badge-level-0 {
-    font-size: 11pt !important;
-  }
-
-  /* Level 1: Lettres (a, b...) */
-  .question-badge-level-1 {
-    font-size: 11pt !important;
-    font-style: italic !important; /* Lettres en italique pour le style math */
+    background-color: #000 !important;
+    color: #fff !important;
+    border-radius: 50% !important;
+    width: 1.7em !important;
+    height: 1.7em !important;
+    font-size: 10pt !important;
+    padding: 0 !important;
+    margin-top: -0.1em !important;
   }
   
-  /* Pour les lettres, on peut vouloir une parenthèse au lieu d'un point */
+  .question-badge-level-0::after {
+    content: "" !important;
+  }
+
+  /* Level 1: Italic Text */
+  .question-badge-level-1 {
+    font-size: 11pt !important;
+    font-style: italic !important;
+    background-color: transparent !important;
+    color: #000 !important;
+    justify-content: flex-start !important;
+    padding-left: 0 !important;
+    width: auto !important;
+    height: auto !important;
+  }
+  
   .question-badge-level-1::after {
-    content: ")" !important;
+    content: "" !important; /* Managed by JS text content */
   }
 
   /* ══════════════════════════════════════════════
@@ -160,7 +165,7 @@
   .question-row {
     display: grid !important;
     grid-template-columns: min-content 1fr !important;
-    gap: 3mm !important;
+    gap: 4mm !important;
     align-items: start !important;
     page-break-inside: avoid !important;
     break-inside: avoid !important;
@@ -177,13 +182,13 @@
 
   /* ── Question list spacing ── */
   .question-list-main {
-    gap: 3mm !important;
+    gap: 4mm !important;
     padding-left: 0 !important;
   }
 
   .question-list-sub {
     gap: 2mm !important;
-    padding-left: 5mm !important;
+    padding-left: 8mm !important;
     margin-top: 0 !important;
   }
 
@@ -238,7 +243,7 @@
   .exercise-card {
     page-break-inside: auto !important;
     break-inside: auto !important;
-    margin-bottom: 4mm !important;
+    margin-bottom: 6mm !important;
     border: none !important;
     padding: 0 !important;
   }
@@ -246,7 +251,6 @@
   .exercise-card .exercise-title {
     page-break-after: avoid !important;
     break-after: avoid !important;
-    /* Margin defined above */
   }
 
   .exercise-statement {
@@ -254,14 +258,14 @@
     break-inside: avoid !important;
     page-break-after: avoid !important;
     break-after: avoid !important;
-    margin-bottom: 2mm !important;
+    margin-bottom: 3mm !important;
     font-size: var(--print-font-size) !important;
   }
 
   .question-block {
     page-break-inside: avoid !important;
     break-inside: avoid !important;
-    margin-bottom: 1.5mm !important;
+    margin-bottom: 2mm !important;
   }
 
   .question-block .answer-space {
@@ -280,7 +284,7 @@
   }
 
   .exercise-questions-wrapper {
-    margin-top: 2mm !important;
+    margin-top: 3mm !important;
   }
 
   .exercise-questions-wrapper > .question-list-main > .question-block:first-child {
