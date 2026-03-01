@@ -21,16 +21,17 @@
 
   @page {
     size: A4 portrait;
-    margin: 12mm 14mm 10mm 14mm;
+    margin: 20mm 14mm 15mm 14mm;
   }
 
   @page :first {
-    margin-top: 8mm;
+    margin-top: 20mm;
   }
 
   html, body {
     margin: 0 !important;
     padding: 0 !important;
+    padding-top: 10mm !important; /* Prevent horizontal cut-off at the top */
     background: white !important;
     color: #000 !important;
     font-size: var(--print-font-size);
@@ -121,8 +122,8 @@
   .question-number-badge {
     font-family: 'IBM Plex Serif', serif !important;
     font-weight: 700 !important;
-    display: flex !important;
-    align-items: center !important;
+    display: inline-flex !important;
+    align-items: baseline !important;
     justify-content: center !important;
     margin-top: 0 !important;
     flex-shrink: 0 !important;
@@ -136,9 +137,11 @@
     border-radius: 1mm !important;
     width: 2.2em !important;
     height: 2.2em !important;
+    line-height: 2.2em !important; /* Center text vertically */
+    text-align: center !important;
     font-size: 11pt !important;
     padding: 0 !important;
-    margin-top: -0.2em !important;
+    margin-top: 0 !important; /* Reset margin for baseline alignment */
   }
   
   .question-badge-level-0::after {
@@ -169,7 +172,7 @@
     display: grid !important;
     grid-template-columns: min-content 1fr !important;
     gap: 4mm !important;
-    align-items: start !important;
+    align-items: baseline !important;
     page-break-inside: avoid !important;
     break-inside: avoid !important;
   }
@@ -202,15 +205,6 @@
   /* ══════════════════════════════════════════════
      MATHJAX SVG
   ══════════════════════════════════════════════ */
-  mjx-container[jax="SVG"] {
-    display: inline !important;
-    vertical-align: baseline !important;
-  }
-
-  mjx-container[jax="SVG"] svg {
-    vertical-align: baseline !important;
-  }
-
   mjx-container[jax="SVG"] * {
     stroke: #000 !important;
     fill: #000 !important;
@@ -223,8 +217,6 @@
   }
 
   .question-content mjx-container[jax="SVG"] {
-    display: inline !important;
-    vertical-align: middle !important;
     max-width: 100% !important;
   }
 

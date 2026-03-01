@@ -99,7 +99,7 @@ const CodeBlock = ({ code, label }: { code: string; label?: string }) => {
 const GuideSection = ({ title, children, icon: Icon }: { title: string, children: React.ReactNode, icon?: React.ElementType }) => (
   <div className="mb-6">
     <h3 className="flex items-center gap-2 text-sm font-bold text-slate-800 mb-2 pb-1.5 border-b border-slate-100">
-      {Icon && <Icon className="w-4 h-4 text-indigo-500" />}
+      {Icon && <Icon className="w-4 h-4 text-blue-600" />}
       {title}
     </h3>
     <div className="text-xs text-slate-600 space-y-2 leading-relaxed">
@@ -121,13 +121,13 @@ const JSONGuide = ({ onClose }: { onClose: () => void }) => {
     <div className="h-full flex flex-col bg-white">
       <div className="px-5 py-3 border-b border-slate-200 flex items-center justify-between bg-slate-50/50">
         <h2 className="text-sm font-bold font-display text-slate-800 flex items-center gap-2">
-          <BookOpen className="w-4 h-4 text-indigo-600" />
+          <BookOpen className="w-4 h-4 text-blue-600" />
           Guide
         </h2>
         <div className="flex items-center gap-1.5">
           <button 
             onClick={handleCopyAll}
-            className="flex items-center gap-1 px-2 py-1 text-[10px] font-medium text-slate-500 hover:text-indigo-600 bg-white border border-slate-200 hover:border-indigo-200 rounded transition"
+            className="flex items-center gap-1 px-2 py-1 text-[10px] font-medium text-slate-500 hover:text-blue-600 bg-white border border-slate-200 hover:border-blue-300 rounded-none transition"
           >
             {copiedAll ? <CheckCircle2 className="w-3 h-3 text-emerald-500" /> : <Copy className="w-3 h-3" />}
             {copiedAll ? "OK" : "Copier"}
@@ -140,13 +140,13 @@ const JSONGuide = ({ onClose }: { onClose: () => void }) => {
       
       <div className="flex-1 overflow-y-auto p-5 custom-scrollbar">
         <div className="max-w-none">
-          <p className="text-slate-500 mb-4 bg-indigo-50 border border-indigo-100 p-3 rounded-lg text-xs">
+          <p className="text-slate-600 mb-4 bg-blue-50 border border-blue-200 p-3 rounded-none text-xs">
             Ce format JSON permet de structurer vos fiches d'exercices.
           </p>
 
           <GuideSection title="Structure de base" icon={FileJson}>
             <p>Deux cles obligatoires :</p>
-            <ul className="list-disc pl-4 space-y-0.5 marker:text-indigo-400">
+            <ul className="list-disc pl-4 space-y-0.5 marker:text-blue-500">
               <li><code className="bg-slate-100 px-1 py-0.5 rounded text-slate-800 font-bold text-[10px]">chapter</code> : Titre de la fiche</li>
               <li><code className="bg-slate-100 px-1 py-0.5 rounded text-slate-800 font-bold text-[10px]">exercises</code> : Liste d'exercices</li>
             </ul>
@@ -510,32 +510,32 @@ const JSONEditorModal: React.FC<JSONEditorModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40 backdrop-blur-sm p-3 md:p-5">
-      <div className={`bg-white border rounded-xl w-full max-w-5xl h-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden relative transition-all duration-200 ${savedFlash ? 'border-emerald-400 ring-2 ring-emerald-200' : 'border-slate-200'}`}>
+      <div className={`bg-white border rounded-none w-full max-w-5xl h-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden relative transition-all duration-200 ${savedFlash ? 'border-emerald-400 ring-2 ring-emerald-200' : 'border-slate-300'}`}>
         
         {/* ─── Header ─── */}
-        <div className="px-4 py-3 border-b border-slate-200 flex items-center justify-between bg-white z-20">
-          <div className="flex items-center gap-2.5">
-            <div className="p-1.5 bg-slate-100 text-slate-600 rounded-md">
-              <FileJson className="w-4 h-4" />
+        <div className="px-5 py-4 border-b border-slate-200 flex items-center justify-between bg-white z-20">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-blue-100 text-blue-600 rounded-none">
+              <FileJson className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-sm font-bold text-slate-800 font-display">Editeur JSON</h2>
+              <h2 className="text-base font-bold text-slate-900 font-display">Editeur JSON</h2>
             </div>
           </div>
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-2">
             <button
               onClick={() => setShowGuide(!showGuide)}
-              className={`p-1.5 rounded-md transition-all text-xs ${
+              className={`p-2 rounded-none transition-all text-sm ${
                 showGuide 
-                  ? 'bg-indigo-100 text-indigo-700' 
-                  : 'text-slate-400 hover:bg-slate-100 hover:text-slate-600'
+                  ? 'bg-blue-100 text-blue-700' 
+                  : 'text-slate-500 hover:bg-slate-100 hover:text-slate-700'
               }`}
               title="Guide (structure JSON)"
             >
-              <HelpCircle className="w-4 h-4" />
+              <HelpCircle className="w-5 h-5" />
             </button>
-            <button onClick={onClose} className="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-md transition">
-              <X className="w-4 h-4" />
+            <button onClick={onClose} className="p-2 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-none transition">
+              <X className="w-5 h-5" />
             </button>
           </div>
         </div>
@@ -545,10 +545,10 @@ const JSONEditorModal: React.FC<JSONEditorModalProps> = ({
           <div className="flex-1 flex flex-col min-w-0 transition-all duration-200">
             {/* Toolbar - minimal */}
             <div className="px-3 py-1.5 border-b border-slate-100 flex items-center gap-1.5 bg-slate-50/80">
-              <div className="flex items-center gap-0.5 bg-white border border-slate-200 rounded-md p-0.5">
+              <div className="flex items-center gap-0.5 bg-white border border-slate-200 rounded-none p-0.5">
                 <button 
                   onClick={handleFormat}
-                  className="flex items-center gap-1.5 px-2 py-1 hover:bg-slate-50 text-slate-500 text-[11px] font-medium rounded transition"
+                  className="flex items-center gap-1.5 px-2 py-1 hover:bg-slate-50 text-slate-500 text-[11px] font-medium rounded-none transition"
                   title="Formater (Ctrl+Shift+F)"
                 >
                   <AlignLeft className="w-3 h-3" />
@@ -557,7 +557,7 @@ const JSONEditorModal: React.FC<JSONEditorModalProps> = ({
                 <div className="w-px h-3 bg-slate-200" />
                 <button 
                   onClick={handleMinify}
-                  className="flex items-center gap-1.5 px-2 py-1 hover:bg-slate-50 text-slate-500 text-[11px] font-medium rounded transition"
+                  className="flex items-center gap-1.5 px-2 py-1 hover:bg-slate-50 text-slate-500 text-[11px] font-medium rounded-none transition"
                   title="Compacter"
                 >
                   <AlignJustify className="w-3 h-3" />
@@ -567,7 +567,7 @@ const JSONEditorModal: React.FC<JSONEditorModalProps> = ({
 
               <button 
                 onClick={handleCopy}
-                className="flex items-center gap-1.5 px-2 py-1 text-slate-500 hover:text-slate-700 text-[11px] font-medium rounded hover:bg-white border border-transparent hover:border-slate-200 transition"
+                className="flex items-center gap-1.5 px-2 py-1 text-slate-500 hover:text-slate-700 text-[11px] font-medium rounded-none hover:bg-white border border-transparent hover:border-slate-200 transition"
               >
                 {copied ? <CheckCircle2 className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3" />}
                 {copied ? "OK" : "Copier"}
@@ -578,11 +578,11 @@ const JSONEditorModal: React.FC<JSONEditorModalProps> = ({
               {/* Keyboard shortcuts hint */}
               <div className="hidden md:flex items-center gap-2 text-[10px] text-slate-400">
                 <span className="flex items-center gap-0.5">
-                  <kbd className="px-1 py-0.5 bg-slate-100 border border-slate-200 rounded text-[9px] font-mono">Ctrl+S</kbd>
+                  <kbd className="px-1 py-0.5 bg-slate-100 border border-slate-200 rounded-none text-[9px] font-mono">Ctrl+S</kbd>
                   sauver
                 </span>
                 <span className="flex items-center gap-0.5">
-                  <kbd className="px-1 py-0.5 bg-slate-100 border border-slate-200 rounded text-[9px] font-mono">Ctrl+Shift+F</kbd>
+                  <kbd className="px-1 py-0.5 bg-slate-100 border border-slate-200 rounded-none text-[9px] font-mono">Ctrl+Shift+F</kbd>
                   formater
                 </span>
               </div>
@@ -635,7 +635,7 @@ const JSONEditorModal: React.FC<JSONEditorModalProps> = ({
               
               {/* Error panel */}
               {!isValid && error.message && (
-                <div className="absolute bottom-3 left-3 md:left-14 right-3 bg-rose-50 border border-rose-200 text-rose-800 px-3 py-2 rounded-lg shadow-lg flex items-start gap-2 text-[11px] font-mono z-10 max-h-24 overflow-y-auto">
+                <div className="absolute bottom-3 left-3 md:left-14 right-3 bg-rose-50 border border-rose-200 text-rose-800 px-3 py-2 rounded-none shadow-lg flex items-start gap-2 text-[11px] font-mono z-10 max-h-24 overflow-y-auto">
                   <AlertCircle className="w-3.5 h-3.5 text-rose-500 shrink-0 mt-0.5" />
                   <div className="min-w-0">
                     <p className="font-bold text-rose-700 text-[10px] uppercase tracking-wider mb-0.5">
@@ -657,28 +657,28 @@ const JSONEditorModal: React.FC<JSONEditorModalProps> = ({
         </div>
 
         {/* ─── Footer ─── */}
-        <div className="px-4 py-2.5 border-t border-slate-100 flex justify-between items-center bg-white z-20">
-          <div className="text-[11px] text-slate-400 hidden md:flex items-center gap-3 font-mono">
+        <div className="px-5 py-3 border-t border-slate-200 flex justify-between items-center bg-white z-20">
+          <div className="text-[11px] text-slate-500 hidden md:flex items-center gap-3 font-mono">
             <span>{lineCount} lig.</span>
             <span>{code.length} car.</span>
           </div>
-          <div className="flex items-center gap-2 w-full md:w-auto justify-end">
+          <div className="flex items-center gap-3 w-full md:w-auto justify-end">
             <button 
               onClick={onClose}
-              className="px-3 py-1.5 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-md font-medium transition text-xs"
+              className="px-4 py-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-none font-medium transition text-sm border border-transparent"
             >
               Fermer
             </button>
             <button 
               onClick={handleSave}
               disabled={!isValid}
-              className={`flex items-center gap-1.5 px-4 py-1.5 rounded-md font-bold text-xs transition active:scale-95 ${
+              className={`flex items-center gap-2 px-5 py-2 rounded-none font-bold text-sm transition active:scale-95 ${
                 savedFlash 
                   ? 'bg-emerald-600 text-white' 
-                  : 'bg-slate-900 text-white hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed'
+                  : 'bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed'
               }`}
             >
-              <Save className="w-3.5 h-3.5" />
+              <Save className="w-4 h-4" />
               {savedFlash ? 'Sauvegarde...' : confirmLabel}
             </button>
           </div>

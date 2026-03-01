@@ -222,12 +222,12 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, workshee
 			aria-modal="true"
 		>
 			<div
-				className="bg-white rounded-xl shadow-2xl border border-slate-200 w-full max-w-2xl max-h-[90vh] flex flex-col"
+				className="bg-white rounded-none shadow-2xl border border-slate-300 w-full max-w-2xl max-h-[90vh] flex flex-col"
 				onClick={e => e.stopPropagation()}
 			>
 				<header className="flex justify-between items-center px-6 py-4 border-b border-slate-200">
-					<h2 className="text-lg font-bold font-display text-slate-800">Paramètres</h2>
-					<button onClick={onClose} className="p-1.5 rounded-md hover:bg-slate-100 transition" aria-label="Fermer">
+					<h2 className="text-lg font-bold font-display text-slate-900">Paramètres</h2>
+					<button onClick={onClose} className="p-1.5 rounded-none hover:bg-slate-100 transition" aria-label="Fermer">
 						<X className="h-5 w-5 text-slate-500" />
 					</button>
 				</header>
@@ -259,7 +259,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, workshee
 										id="class-select"
 										value={selectedClass}
 										onChange={(e) => handleClassChange(e.target.value)}
-										className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-200 transition"
+										className="w-full rounded-none border border-gray-300 bg-white px-3 py-2 text-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 transition"
 									>
 										<option value="">— Sélectionner —</option>
 										{CLASS_OPTIONS.map(option => (
@@ -275,7 +275,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, workshee
 										placeholder="2025-2026"
 										value={selectedSchoolYear}
 										onChange={(e) => handleSchoolYearChange(e.target.value)}
-										className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-200 transition"
+										className="w-full rounded-none border border-gray-300 px-3 py-2 text-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 transition"
 									/>
 								</div>
 							</div>
@@ -294,7 +294,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, workshee
 							</div>
 							<div className="ml-0 md:ml-12">
 								<div
-									className={`flex flex-col items-center justify-center gap-3 border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition ${isLogoDragOver ? 'border-indigo-500 bg-indigo-50 text-indigo-600' : 'border-gray-300 bg-gray-50 hover:border-indigo-400 hover:bg-indigo-50'}`}
+									className={`flex flex-col items-center justify-center gap-3 border-2 border-dashed rounded-none p-6 text-center cursor-pointer transition ${isLogoDragOver ? 'border-blue-600 bg-blue-50 text-blue-600' : 'border-gray-300 bg-gray-50 hover:border-blue-500 hover:bg-blue-50'}`}
 									onClick={() => logoInputRef.current?.click()}
 									onDrop={handleLogoDrop}
 									onDragOver={handleLogoDragOver}
@@ -325,7 +325,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, workshee
 									<button
 										type="button"
 										onClick={handleRemoveLogo}
-										className="mt-3 inline-flex items-center gap-2 rounded-lg border border-gray-300 px-3 py-1.5 text-xs font-medium text-gray-600 hover:border-red-400 hover:text-red-500 hover:bg-red-50 transition"
+										className="mt-3 inline-flex items-center gap-2 rounded-none border border-gray-300 px-3 py-1.5 text-xs font-medium text-gray-600 hover:border-red-600 hover:text-red-600 hover:bg-red-50 transition"
 									>
 										<ImageOff className="h-3.5 w-3.5" />
 										Retirer le logo
@@ -345,7 +345,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, workshee
 									<p className="text-sm text-slate-500">Hauteur par défaut des zones quadrillées.</p>
 								</div>
 							</div>
-							<div className="flex items-center gap-4 ml-0 md:ml-12 bg-white p-4 rounded-lg border border-slate-200">
+							<div className="flex items-center gap-4 ml-0 md:ml-12 bg-white p-4 rounded-none border border-slate-200">
 								<input
 									id="answer-height"
 									type="range"
@@ -354,9 +354,9 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, workshee
 									step="10"
 									value={editableContent.settings?.answerSpaceMinHeight || 120}
 									onChange={handleHeightChange}
-									className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+									className="w-full h-2 bg-gray-200 rounded-none appearance-none cursor-pointer accent-blue-600"
 								/>
-								<label htmlFor="answer-height" className="font-mono font-bold text-indigo-600 w-16 text-center text-lg">
+								<label htmlFor="answer-height" className="font-mono font-bold text-blue-600 w-16 text-center text-lg">
 									{editableContent.settings?.answerSpaceMinHeight || 120}px
 								</label>
 							</div>
@@ -377,7 +377,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, workshee
 								{editableContent.exercises.map((ex, index) => (
 									<div
 										key={ex.id || index}
-										className="flex items-center justify-between p-3 bg-white border border-gray-200 rounded-lg hover:border-indigo-300 hover:shadow-sm transition group"
+										className="flex items-center justify-between p-3 bg-white border border-gray-200 rounded-none hover:border-blue-400 hover:shadow-sm transition group"
 										draggable
 										onDragStart={(e) => handleDragStart(e, index)}
 										onDragEnter={(e) => handleDragEnter(e, index)}
@@ -386,14 +386,14 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, workshee
 										onDragEnd={handleDragEnd}
 									>
 										<div className="flex items-center gap-3">
-											<div className="p-1 text-gray-300 group-hover:text-indigo-400 cursor-move transition">
+											<div className="p-1 text-gray-300 group-hover:text-blue-600 cursor-move transition">
 												<GripVertical className="h-5 w-5" />
 											</div>
 											<span className="font-medium text-slate-700 truncate">{index + 1}. {ex.title}</span>
 										</div>
 										<button
 											onClick={() => handleDeleteExercise(index)}
-											  className="p-2 text-slate-400 hover:text-red-600 rounded-full hover:bg-red-50 transition"
+											  className="p-2 text-slate-400 hover:text-red-600 rounded-none hover:bg-red-50 transition"
 											aria-label="Supprimer l'exercice"
 										>
 											<Trash2 className="h-4 w-4" />
@@ -405,11 +405,11 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, workshee
 					</div>
 				</main>
 
-			<footer className="flex justify-end items-center gap-2.5 px-6 py-4 border-t border-slate-200 bg-slate-50/50 rounded-b-xl">
-					<button onClick={onClose} className="px-4 py-2 text-sm text-slate-600 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 font-medium transition shadow-sm">
+			<footer className="flex justify-end items-center gap-3 px-6 py-4 border-t border-slate-200 bg-slate-50/50 rounded-none">
+					<button onClick={onClose} className="px-5 py-2.5 text-sm text-slate-600 bg-white border border-slate-300 rounded-none hover:bg-slate-50 font-medium transition shadow-sm">
 						Annuler
 					</button>
-					<button onClick={handleSave} className="px-4 py-2 text-sm text-white bg-slate-900 rounded-lg hover:bg-slate-800 font-medium transition shadow-md hover:shadow-lg">
+					<button onClick={handleSave} className="px-5 py-2.5 text-sm text-white bg-blue-600 rounded-none hover:bg-blue-700 font-medium transition shadow-sm">
 						Enregistrer
 					</button>
 				</footer>

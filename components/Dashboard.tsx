@@ -205,48 +205,48 @@ const Dashboard: React.FC<DashboardProps> = ({
                                        )}
 
                                        {/* Hover actions */}
-                                       <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0" onClick={(e) => e.stopPropagation()}>
+                                       <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity shrink-0" onClick={(e) => e.stopPropagation()}>
                                            <button 
                                                onClick={() => handleRename(ws)} 
-                                               className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded transition" 
+                                               className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-none transition" 
                                                aria-label="Renommer"
                                            >
-                                               <Pencil className="h-4 w-4" />
+                                               <Pencil className="h-5 w-5" />
                                            </button>
                                            <button 
                                                onClick={() => handleEditJson(ws)} 
-                                               className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded transition" 
+                                               className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-none transition" 
                                                aria-label="Editer JSON"
                                            >
-                                               <Code className="h-4 w-4" />
+                                               <Code className="h-5 w-5" />
                                            </button>
                                            <button 
                                                onClick={() => onDeleteWorksheet(ws.id)} 
-                                               className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded transition" 
+                                               className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-none transition" 
                                                aria-label="Supprimer"
                                            >
-                                               <Trash2 className="h-4 w-4" />
+                                               <Trash2 className="h-5 w-5" />
                                            </button>
                                        </div>
                                    </div>
 
                                    {/* Meta info */}
-                                   <div className="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between text-sm text-slate-500">
-                                       <div className="flex items-center gap-4">
-                                           <span className="flex items-center gap-1.5 font-medium">
-                                               <FileText className="h-4 w-4 text-slate-400" />
+                                   <div className="mt-auto pt-5 border-t border-slate-200 flex items-center justify-between text-base text-slate-600">
+                                       <div className="flex items-center gap-5">
+                                           <span className="flex items-center gap-2 font-medium">
+                                               <FileText className="h-5 w-5 text-slate-400" />
                                                {exerciseCount} ex.
                                            </span>
                                            {classNameLabel && (
-                                               <span className="truncate max-w-[120px] bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-600">{classNameLabel}</span>
+                                               <span className="truncate max-w-[150px] bg-slate-100 px-3 py-1 text-sm font-semibold text-slate-700 border border-slate-200">{classNameLabel}</span>
                                            )}
                                        </div>
-                                       <div className="flex items-center gap-2">
-                                           <span className="flex items-center gap-1.5">
-                                               <Calendar className="h-4 w-4 text-slate-400" />
+                                       <div className="flex items-center gap-3">
+                                           <span className="flex items-center gap-2">
+                                               <Calendar className="h-5 w-5 text-slate-400" />
                                                {new Date(ws.createdAt).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })}
                                            </span>
-                                           <ChevronRight className="h-4 w-4 text-slate-300 group-hover:text-blue-600 transition-colors" />
+                                           <ChevronRight className="h-5 w-5 text-slate-300 group-hover:text-blue-600 transition-colors" />
                                        </div>
                                    </div>
                                </div>

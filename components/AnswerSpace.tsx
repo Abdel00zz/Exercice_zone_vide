@@ -150,7 +150,7 @@ const AnswerSpace: React.FC<AnswerSpaceProps> = ({ height = 120, onHeightChange 
     <div className="my-3 answer-space group relative">
       <div
         ref={containerRef}
-        className="w-full relative rounded-lg transition-shadow duration-200 hover:shadow-md print:rounded-none print:shadow-none box-border"
+        className="w-full relative rounded-none transition-shadow duration-200 hover:shadow-md print:rounded-none print:shadow-none box-border"
         style={{
           height: `${height}px`,
           backgroundColor: THEME.screen.bg,
@@ -287,13 +287,13 @@ const AnswerSpace: React.FC<AnswerSpaceProps> = ({ height = 120, onHeightChange 
         <div className="absolute top-1.5 right-1.5 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity no-print">
            <button
             onClick={handleAutoFill}
-            className="p-1 text-[10px] bg-indigo-600 text-white rounded hover:bg-indigo-700 transition shadow-sm flex items-center gap-1"
+            className="p-1 text-[10px] bg-blue-600 text-white rounded-none hover:bg-blue-700 transition shadow-sm flex items-center gap-1"
             title="Ajuster la hauteur pour remplir le reste de la page"
           >
             <Wand2 className="w-3 h-3" />
             <span className="hidden sm:inline">Remplir</span>
           </button>
-          <div className="px-1.5 py-0.5 text-[10px] font-mono bg-black/60 text-white rounded select-none">
+          <div className="px-1.5 py-0.5 text-[10px] font-mono bg-black/60 text-white rounded-none select-none">
             {height}px
           </div>
         </div>
