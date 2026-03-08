@@ -1,9 +1,11 @@
 import React, { useRef, useCallback, useId, useMemo } from 'react';
 import { Wand2 } from 'lucide-react';
+import type { ImageConfig } from '../types';
 
 interface AnswerSpaceProps {
   height?: number;
   onHeightChange: (newHeight: number) => void;
+  image?: ImageConfig;
 }
 
 // Configuration
@@ -31,7 +33,7 @@ const THEME = {
   },
 };
 
-const AnswerSpace: React.FC<AnswerSpaceProps> = ({ height = 120, onHeightChange }) => {
+const AnswerSpace: React.FC<AnswerSpaceProps> = ({ height = 120, onHeightChange, image }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const isResizing = useRef(false);
   const startY = useRef(0);
@@ -284,7 +286,7 @@ const AnswerSpace: React.FC<AnswerSpaceProps> = ({ height = 120, onHeightChange 
         </div>
 
         {/* Indicateur de hauteur & Bouton Auto-Fill */}
-        <div className="absolute top-1.5 right-1.5 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity no-print">
+        <div className="absolute top-1.5 right-1.5 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity no-print z-20">
            <button
             onClick={handleAutoFill}
             className="p-1 text-[10px] bg-blue-600 text-white rounded-none hover:bg-blue-700 transition shadow-sm flex items-center gap-1"
@@ -297,6 +299,36 @@ const AnswerSpace: React.FC<AnswerSpaceProps> = ({ height = 120, onHeightChange 
             {height}px
           </div>
         </div>
+
+        {/* Image Injectée */}
+        {image && image.src && (
+          <div 
+            className={`absolute z-10 p-2 ${
+              image.placement === 'center' ? 'left-1/2 -translate-x-1/2' : 
+              image.placement === 'right' ? 'right-2' : 'left-2'
+            }`}
+            style={{ top: '8px' }}
+          >
+            <div className="flex flex-col items-center gap-1 bg-white/80 p-1 border border-slate-200 shadow-sm print:bg-white print:border-none print:shadow-none print:p-0">
+              <img 
+                src={image.src} 
+                alt={image.caption || "Image de l'exercice"} 
+                style={{ 
+                  width: image.width ? `${image.width}px` : 'auto',
+                  height: image.height ? `${image.height}px` : 'auto',
+                  maxWidth: '100%',
+                  objectFit: 'contain'
+                }}
+                className="print:max-w-full"
+              />
+              {image.caption && (
+                <span className="text-xs text-slate-600 font-medium italic print:text-black mt-1">
+                  {image.caption}
+                </span>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

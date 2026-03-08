@@ -1,7 +1,9 @@
-import React from 'react';
-import type { Exercise, QuestionPart } from '../types';
+import React, { useState } from 'react';
+import type { Exercise, QuestionPart, ImageConfig } from '../types';
 import MathText from './MathText';
 import AnswerSpace from './AnswerSpace';
+import ImageModal from './ImageModal';
+import { Image as ImageIcon } from 'lucide-react';
 
 interface ExerciseCardProps {
   exercise: Exercise;
@@ -32,6 +34,8 @@ interface QuestionListProps {
 }
 
 const QuestionList: React.FC<QuestionListProps> = ({ questions, level = 0, answerSpaceMinHeight, onQuestionUpdate, exerciseId, path }) => {
+  const [activeImageModal, setActiveImageModal] = useState<number | null>(null);
+
   if (!questions || questions.length === 0) {
     return null;
   }
@@ -49,7 +53,7 @@ const QuestionList: React.FC<QuestionListProps> = ({ questions, level = 0, answe
       {questions.map((q, index) => {
         const currentPath = [...path, index];
         return (
-          <div key={index} className="question-block">
+          <div key={index} className="question-block group/question relative">
             {/* 
                 MÉCANISME D'ALIGNEMENT INTELLIGENT 
             */}
@@ -108,7 +112,7 @@ const QuestionList: React.FC<QuestionListProps> = ({ questions, level = 0, answe
 
               {/* Contenu de la question */}
               <div 
-                className="question-content"
+                className="question-content relative"
                 style={{ 
                   minWidth: 0, 
                   margin: 0, 
@@ -116,12 +120,48 @@ const QuestionList: React.FC<QuestionListProps> = ({ questions, level = 0, answe
                   paddingTop: '0.15em' 
                 }}
               >
-                <div className="question-text-wrapper" style={{ margin: 0, padding: 0 }}>
+                <div className="question-text-wrapper pr-8" style={{ margin: 0, padding: 0 }}>
                   <MathText text={q.text} />
                 </div>
+                
+                {/* Bouton d'ajout d'image (visible au survol) */}
+                <button
+                  onClick={() => setActiveImageModal(index)}
+                  className="absolute top-0 right-0 p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded opacity-0 group-hover/question:opacity-100 transition-opacity no-print"
+                  title="Ajouter/Modifier une image"
+                >
+                  <ImageIcon className="w-4 h-4" />
+                </button>
               </div>
             </div>
             
+            {/* Rendu de l'image si la question a des sous-questions (pas de zone de réponse) */}
+            {q.subquestions && q.subquestions.length > 0 && q.image && q.image.src && (
+              <div className={`mt-3 mb-2 flex ${
+                q.image.placement === 'center' ? 'justify-center' : 
+                q.image.placement === 'right' ? 'justify-end' : 'justify-start'
+              }`}>
+                <div className="flex flex-col items-center gap-1">
+                  <img 
+                    src={q.image.src} 
+                    alt={q.image.caption || "Image de la question"} 
+                    style={{ 
+                      width: q.image.width ? `${q.image.width}px` : 'auto',
+                      height: q.image.height ? `${q.image.height}px` : 'auto',
+                      maxWidth: '100%',
+                      objectFit: 'contain'
+                    }}
+                    className="print:max-w-full"
+                  />
+                  {q.image.caption && (
+                    <span className="text-xs text-slate-600 font-medium italic print:text-black mt-1">
+                      {q.image.caption}
+                    </span>
+                  )}
+                </div>
+              </div>
+            )}
+
             {q.subquestions && q.subquestions.length > 0 ? (
               <div className="subquestions-container" style={{ marginTop: '0.75rem' }}>
                 <QuestionList 
@@ -137,8 +177,19 @@ const QuestionList: React.FC<QuestionListProps> = ({ questions, level = 0, answe
                <AnswerSpace 
                  height={q.answerHeight || answerSpaceMinHeight}
                  onHeightChange={(newHeight) => onQuestionUpdate(exerciseId, currentPath, { answerHeight: newHeight })}
+                 image={q.image}
                />
             )}
+
+            <ImageModal
+              isOpen={activeImageModal === index}
+              onClose={() => setActiveImageModal(null)}
+              initialImage={q.image}
+              onSave={(imageConfig) => {
+                onQuestionUpdate(exerciseId, currentPath, { image: imageConfig });
+                setActiveImageModal(null);
+              }}
+            />
           </div>
         )
       })}
@@ -148,8 +199,10 @@ const QuestionList: React.FC<QuestionListProps> = ({ questions, level = 0, answe
 
 
 const ExerciseCard: React.FC<ExerciseCardProps> = ({ exercise, exerciseNumber, answerSpaceMinHeight, onQuestionUpdate, onExerciseUpdate }) => {
+  const [isImageModalOpen, setIsImageModalOpen] = useState(false);
+
   return (
-    <div className="exercise-card bg-white text-black p-6 md:p-10 rounded-xl shadow-sm mb-10 print:shadow-none print:rounded-none print:bg-transparent print:text-black print:p-0 print:mb-6 border border-slate-100 print:border-none">
+    <div className="exercise-card bg-white text-black p-6 md:p-10 rounded-xl shadow-sm mb-10 print:shadow-none print:rounded-none print:bg-transparent print:text-black print:p-0 print:mb-6 border border-slate-100 print:border-none relative group/exercise">
       <h2 className="exercise-title text-xl font-bold font-display text-slate-900 print:text-black flex flex-col items-start gap-3 mb-8 print:mb-5 pt-2">
         <span 
           className="exercise-badge font-bold uppercase tracking-widest shadow-none"
@@ -173,9 +226,45 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({ exercise, exerciseNumber, a
         <span className="leading-tight text-2xl md:text-3xl mt-1">{exercise.title}</span>
       </h2>
       
+      {/* Bouton d'ajout d'image pour l'énoncé (visible au survol) */}
+      <button
+        onClick={() => setIsImageModalOpen(true)}
+        className="absolute top-6 right-6 p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded opacity-0 group-hover/exercise:opacity-100 transition-opacity no-print"
+        title="Ajouter/Modifier une image pour l'énoncé"
+      >
+        <ImageIcon className="w-5 h-5" />
+      </button>
+
       {exercise.statement && (
         <div className="exercise-statement prose prose-lg max-w-none text-black print:text-black mb-8 pl-1">
             <p className="text-black print:text-black leading-relaxed"><MathText text={exercise.statement} /></p>
+        </div>
+      )}
+
+      {/* Rendu de l'image si l'exercice a des questions (pas de zone de réponse globale) */}
+      {exercise.questions && exercise.questions.length > 0 && exercise.image && exercise.image.src && (
+        <div className={`mt-3 mb-6 flex ${
+          exercise.image.placement === 'center' ? 'justify-center' : 
+          exercise.image.placement === 'right' ? 'justify-end' : 'justify-start'
+        }`}>
+          <div className="flex flex-col items-center gap-1">
+            <img 
+              src={exercise.image.src} 
+              alt={exercise.image.caption || "Image de l'exercice"} 
+              style={{ 
+                width: exercise.image.width ? `${exercise.image.width}px` : 'auto',
+                height: exercise.image.height ? `${exercise.image.height}px` : 'auto',
+                maxWidth: '100%',
+                objectFit: 'contain'
+              }}
+              className="print:max-w-full"
+            />
+            {exercise.image.caption && (
+              <span className="text-xs text-slate-600 font-medium italic print:text-black mt-1">
+                {exercise.image.caption}
+              </span>
+            )}
+          </div>
         </div>
       )}
 
@@ -183,6 +272,7 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({ exercise, exerciseNumber, a
          <AnswerSpace 
             height={exercise.statementAnswerHeight || answerSpaceMinHeight}
             onHeightChange={(newHeight) => onExerciseUpdate(exercise.id, { statementAnswerHeight: newHeight })}
+            image={exercise.image}
           />
       )}
 
@@ -198,6 +288,16 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({ exercise, exerciseNumber, a
           />
         </div>
       )}
+
+      <ImageModal
+        isOpen={isImageModalOpen}
+        onClose={() => setIsImageModalOpen(false)}
+        initialImage={exercise.image}
+        onSave={(imageConfig) => {
+          onExerciseUpdate(exercise.id, { image: imageConfig });
+          setIsImageModalOpen(false);
+        }}
+      />
     </div>
   );
 };
