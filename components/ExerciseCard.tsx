@@ -18,7 +18,7 @@ const getNumbering = (index: number, level: number): string => {
     case 0:
       return `${index + 1}`;
     case 1:
-      return `${String.fromCharCode(97 + index)}.`;
+      return `${String.fromCharCode(97 + index)}`; // Removed the dot
     default:
       return '-';
   }
@@ -73,36 +73,39 @@ const QuestionList: React.FC<QuestionListProps> = ({ questions, level = 0, answe
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  fontWeight: 700,
-                  fontFamily: '"IBM Plex Serif", serif',
+                  fontWeight: 500,
+                  fontFamily: '"Inter", sans-serif',
                   lineHeight: 1,
                   WebkitPrintColorAdjust: 'exact',
                   printColorAdjust: 'exact' as any,
                   // Styles spécifiques au niveau
                   ...(level === 0
                     ? {
-                        width: '2.2rem',
-                        height: '2.2rem',
-                        fontSize: '1.1rem',
-                        borderRadius: '2px',
+                        width: '2rem',
+                        height: '2rem',
+                        fontSize: '1rem',
+                        borderRadius: '50%',
                         backgroundColor: '#ffffff',
                         color: '#000000',
-                        border: '1.5px solid #000000',
+                        border: '1px solid #000000',
                         marginTop: '-0.2rem', // Alignement optique avec le texte
-                        boxShadow: 'none'
+                        boxShadow: 'none',
+                        fontFamily: '"Inter", sans-serif',
+                        fontWeight: 500,
                       }
                     : {
-                        width: 'auto',
-                        height: 'auto',
-                        fontSize: '1.1rem',
-                        borderRadius: '0',
-                        backgroundColor: 'transparent',
+                        width: '1.6rem',
+                        height: '1.6rem',
+                        fontSize: '0.9rem',
+                        borderRadius: '50%',
+                        backgroundColor: '#ffffff',
                         color: '#000000',
-                        border: 'none',
-                        marginTop: '0.1rem',
+                        border: '1px solid #000000',
+                        marginTop: '0.05rem',
                         fontStyle: 'normal',
-                        fontWeight: 600,
-                        paddingRight: '0.5rem'
+                        fontWeight: 500,
+                        fontFamily: '"Inter", sans-serif',
+                        paddingRight: '0'
                       }
                   ),
                 }}
@@ -203,19 +206,21 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({ exercise, exerciseNumber, a
 
   return (
     <div className="exercise-card bg-white text-black p-6 md:p-10 rounded-xl shadow-sm mb-10 print:shadow-none print:rounded-none print:bg-transparent print:text-black print:p-0 print:mb-6 border border-slate-100 print:border-none relative group/exercise">
-      <h2 className="exercise-title text-xl font-bold font-display text-slate-900 print:text-black flex flex-col items-start gap-3 mb-8 print:mb-5 pt-2">
+      <h2 className="exercise-title text-xl font-bold font-display text-slate-900 print:text-black flex flex-col print:block items-start gap-3 mb-8 print:mb-5 pt-2">
         <span 
-          className="exercise-badge font-bold uppercase tracking-widest shadow-none"
+          className="exercise-badge font-bold uppercase tracking-widest shadow-none print:mb-3 print:inline-block"
           style={{
             backgroundColor: '#ffffff',
             color: '#000000',
-            fontSize: '0.8rem',
-            padding: '0.4rem 0.8rem',
-            borderRadius: '2px',
-            border: '1.5px solid #000000',
+            fontSize: '0.85rem',
+            padding: '0.4rem 1rem',
+            borderRadius: '9999px',
+            border: '1px solid #000000',
             display: 'inline-flex',
             alignItems: 'center',
-            fontFamily: '"IBM Plex Sans", sans-serif',
+            fontFamily: '"Inter", sans-serif',
+            fontWeight: 600,
+            letterSpacing: '0.1em',
             WebkitPrintColorAdjust: 'exact',
             printColorAdjust: 'exact' as any,
             lineHeight: 1,
@@ -223,7 +228,6 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({ exercise, exerciseNumber, a
         >
           Exercice {exerciseNumber}
         </span>
-        <span className="leading-tight text-2xl md:text-3xl mt-1">{exercise.title}</span>
       </h2>
       
       {/* Bouton d'ajout d'image pour l'énoncé (visible au survol) */}
