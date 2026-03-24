@@ -10,7 +10,19 @@ interface WorksheetHeaderProps {
 const WorksheetHeader: React.FC<WorksheetHeaderProps> = ({ worksheetName, onBack, onOpenSettings }) => {
   
   const handlePrint = () => {
+    const originalTitle = document.title;
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('fr-FR').replace(/\//g, '-');
+    const timeStr = now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }).replace(':', 'h');
+    const safeName = worksheetName.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+    
+    document.title = `${safeName}_${dateStr}_${timeStr}`;
     window.print();
+    
+    // Restore original title after a short delay to ensure print dialog captures it
+    setTimeout(() => {
+      document.title = originalTitle;
+    }, 100);
   };
 
   return (

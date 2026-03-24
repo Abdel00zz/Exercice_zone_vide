@@ -131,6 +131,18 @@ const App: React.FC = () => {
   const handleAddWorksheet = (worksheet: Worksheet) => {
     setWorksheets(prev => [...prev, worksheet]);
   };
+
+  const handleRestoreBackup = (backupWorksheets: Worksheet[]) => {
+    if (window.confirm("Voulez-vous remplacer toutes vos fiches actuelles par cette sauvegarde ? (Annuler pour simplement les ajouter)")) {
+      setWorksheets(backupWorksheets);
+    } else {
+      const newWorksheets = backupWorksheets.map(ws => ({
+        ...ws,
+        id: `ws_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+      }));
+      setWorksheets(prev => [...prev, ...newWorksheets]);
+    }
+  };
   
   const handleDeleteWorksheet = (id: string) => {
     if (window.confirm("Êtes-vous sûr de vouloir supprimer cette fiche ?")) {
@@ -244,6 +256,7 @@ const App: React.FC = () => {
           onDeleteWorksheet={handleDeleteWorksheet}
           onRenameWorksheet={handleRenameWorksheet}
           onUpdateWorksheet={handleUpdateWorksheetContent}
+          onRestoreBackup={handleRestoreBackup}
           setImportError={setImportError}
         />
       ) : selectedWorksheet ? (

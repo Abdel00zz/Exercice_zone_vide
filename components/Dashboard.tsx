@@ -1,6 +1,6 @@
 import React, { useRef, useState, useMemo } from 'react';
 import type { Worksheet, WorksheetContent } from '../types';
-import { FileUp, Trash2, Pencil, Search, Code, Calendar, ChevronRight, FileText, Plus } from 'lucide-react';
+import { FileUp, Trash2, Pencil, Search, Code, Calendar, ChevronRight, FileText, Plus, Download } from 'lucide-react';
 import JSONEditorModal from './JSONEditorModal';
 
 interface DashboardProps {
@@ -10,6 +10,7 @@ interface DashboardProps {
     onDeleteWorksheet: (id: string) => void;
     onRenameWorksheet: (id: string, newName: string) => void;
     onUpdateWorksheet: (id: string, content: WorksheetContent) => void;
+    onRestoreBackup: (backupWorksheets: Worksheet[]) => void;
     setImportError: (error: string | null) => void;
 }
 
@@ -20,12 +21,14 @@ const Dashboard: React.FC<DashboardProps> = ({
     onDeleteWorksheet,
     onRenameWorksheet,
     onUpdateWorksheet,
+    onRestoreBackup,
     setImportError
 }) => {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [renamingId, setRenamingId] = useState<string | null>(null);
     const [newName, setNewName] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
+    const [visibleCount, setVisibleCount] = useState(6);
     
     const [isJsonModalOpen, setIsJsonModalOpen] = useState(false);
     const [jsonMode, setJsonMode] = useState<'create' | 'edit'>('create');
@@ -43,8 +46,14 @@ const Dashboard: React.FC<DashboardProps> = ({
                 if (typeof text !== 'string') {
                     throw new Error('Le fichier ne peut pas etre lu.');
                 }
-                const jsonData = JSON.parse(text) as WorksheetContent;
-                processImport(jsonData, file.name);
+                const jsonData = JSON.parse(text);
+                
+                // Check if it's a backup (array of worksheets)
+                if (Array.isArray(jsonData) && jsonData.length > 0 && jsonData[0].id && jsonData[0].content) {
+                    onRestoreBackup(jsonData as Worksheet[]);
+                } else {
+                    processImport(jsonData as WorksheetContent, file.name);
+                }
             } catch (error) {
                 console.error("Erreur d'importation JSON:", error);
                 setImportError(error instanceof Error ? error.message : 'Fichier JSON invalide.');
@@ -108,6 +117,16 @@ const Dashboard: React.FC<DashboardProps> = ({
         }
     };
 
+    const handleExportAll = () => {
+        const dataStr = JSON.stringify(worksheets, null, 2);
+        const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+        const exportFileDefaultName = `backup_fiches_${new Date().toISOString().split('T')[0]}.json`;
+        const linkElement = document.createElement('a');
+        linkElement.setAttribute('href', dataUri);
+        linkElement.setAttribute('download', exportFileDefaultName);
+        linkElement.click();
+    };
+
     const filteredWorksheets = useMemo(() => {
         if (!searchQuery) {
             return worksheets;
@@ -116,6 +135,12 @@ const Dashboard: React.FC<DashboardProps> = ({
             ws.name.toLowerCase().includes(searchQuery.toLowerCase())
         );
     }, [worksheets, searchQuery]);
+
+    const sortedWorksheets = useMemo(() => {
+        return [...filteredWorksheets].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    }, [filteredWorksheets]);
+
+    const visibleWorksheets = sortedWorksheets.slice(0, visibleCount);
 
     return (
         <div className="min-h-screen bg-slate-50">
@@ -141,6 +166,15 @@ const Dashboard: React.FC<DashboardProps> = ({
                             />
                         </div>
                         
+                        <button
+                            onClick={handleExportAll}
+                            className="flex items-center bg-slate-800 hover:bg-slate-900 text-white font-medium py-2.5 px-5 rounded-none cursor-pointer transition shrink-0 text-base gap-2 shadow-sm"
+                            title="Exporter toutes les fiches en JSON"
+                        >
+                            <Download className="h-5 w-5" />
+                            <span className="hidden sm:inline">Exporter JSON</span>
+                        </button>
+
                         <button
                             onClick={handleOpenCreateJson}
                             className="p-2.5 border border-slate-300 bg-white text-slate-600 hover:text-blue-600 hover:border-blue-600 rounded-none transition shrink-0"
@@ -170,9 +204,21 @@ const Dashboard: React.FC<DashboardProps> = ({
             </header>
             
             {/* ── Cards grid ── */}
-            {filteredWorksheets.length > 0 ? (
+            {sortedWorksheets.length > 0 ? (
+                <>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {filteredWorksheets.map((ws) => {
+                    {/* "New" card */}
+                    <div 
+                        onClick={handleOpenCreateJson}
+                        className="group rounded-none border-2 border-dashed border-slate-300 hover:border-blue-600 flex items-center justify-center cursor-pointer transition-all min-h-[200px] bg-white hover:bg-blue-50/50"
+                    >
+                        <div className="flex flex-col items-center gap-3 text-slate-500 group-hover:text-blue-600 transition-colors">
+                            <Plus className="h-8 w-8" />
+                            <span className="text-base font-medium">Créer une nouvelle fiche</span>
+                        </div>
+                    </div>
+
+                    {visibleWorksheets.map((ws) => {
                         const classNameLabel = ws.content?.settings?.className?.trim() || '';
                         const exerciseCount = ws.content?.exercises?.length || 0;
 
@@ -253,18 +299,19 @@ const Dashboard: React.FC<DashboardProps> = ({
                             </div>
                         );
                     })}
-
-                    {/* "New" card */}
-                    <div 
-                        onClick={handleOpenCreateJson}
-                        className="group rounded-none border-2 border-dashed border-slate-300 hover:border-blue-600 flex items-center justify-center cursor-pointer transition-all min-h-[200px] bg-white hover:bg-blue-50/50"
-                    >
-                        <div className="flex flex-col items-center gap-3 text-slate-500 group-hover:text-blue-600 transition-colors">
-                            <Plus className="h-8 w-8" />
-                            <span className="text-base font-medium">Créer une nouvelle fiche</span>
-                        </div>
-                    </div>
                 </div>
+                
+                {visibleCount < sortedWorksheets.length && (
+                    <div className="mt-10 text-center">
+                        <button
+                            onClick={() => setVisibleCount(prev => prev + 6)}
+                            className="bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 font-medium py-2.5 px-8 rounded-none transition shadow-sm"
+                        >
+                            Voir plus
+                        </button>
+                    </div>
+                )}
+                </>
             ) : (
                 <div className="text-center py-24 border-2 border-dashed border-slate-300 rounded-none bg-white">
                     {searchQuery ? (
@@ -277,7 +324,14 @@ const Dashboard: React.FC<DashboardProps> = ({
                         <>
                             <FileText className="h-10 w-10 text-slate-300 mx-auto mb-4" />
                             <h2 className="text-xl font-semibold text-slate-600">Aucune fiche</h2>
-                            <p className="text-slate-500 mt-2 text-base">Importez un fichier JSON ou créez une nouvelle fiche pour commencer.</p>
+                            <p className="text-slate-500 mt-2 text-base mb-6">Importez un fichier JSON ou créez une nouvelle fiche pour commencer.</p>
+                            <button
+                                onClick={handleOpenCreateJson}
+                                className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-6 rounded-none transition shadow-sm"
+                            >
+                                <Plus className="h-5 w-5" />
+                                Créer une fiche
+                            </button>
                         </>
                     )}
                 </div>
