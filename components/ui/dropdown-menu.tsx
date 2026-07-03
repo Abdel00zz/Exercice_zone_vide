@@ -35,7 +35,7 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({ open, onOpenChange, 
         <div
           role="menu"
           className={cn(
-            'absolute top-full z-40 mt-2 min-w-44 overflow-hidden rounded-xl border border-border bg-card p-1.5 text-card-foreground shadow-xl shadow-stone-900/10',
+            'absolute top-full z-40 mt-2 min-w-44 overflow-hidden rounded-none border border-border bg-card p-1.5 text-card-foreground shadow-lg',
             align === 'end' ? 'right-0' : 'left-0',
           )}
         >
@@ -50,7 +50,7 @@ export const DropdownMenuItem: React.FC<React.ButtonHTMLAttributes<HTMLButtonEle
   <button
     type="button"
     role="menuitem"
-    className={cn('flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm font-medium text-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring', className)}
+    className={cn('flex w-full items-center gap-2 rounded-none px-3 py-2 text-left text-sm font-medium text-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring', className)}
     {...props}
   />
 );

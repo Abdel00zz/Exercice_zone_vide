@@ -41,7 +41,7 @@ export const DialogContent = React.forwardRef<HTMLDivElement, React.HTMLAttribut
         ref={ref}
         role="dialog"
         aria-modal="true"
-        className={cn('fixed left-1/2 top-1/2 z-50 grid w-[calc(100%-2rem)] max-w-lg -translate-x-1/2 -translate-y-1/2 gap-4 border border-border bg-background shadow-2xl duration-200 rounded-lg', className)}
+        className={cn('fixed left-1/2 top-1/2 z-50 grid w-[calc(100%-2rem)] max-w-lg -translate-x-1/2 -translate-y-1/2 gap-4 border border-border bg-background shadow-2xl duration-200 rounded-none', className)}
         {...props}
       >
         {children}
@@ -64,7 +64,7 @@ export const DialogDescription: React.FC<React.HTMLAttributes<HTMLParagraphEleme
   <p className={cn('text-sm text-muted-foreground', className)} {...props} />
 );
 export const DialogClose: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement>> = ({ className, children, ...props }) => (
-  <Button variant="ghost" size="icon" className={cn('absolute right-4 top-4 h-8 w-8 rounded-sm opacity-70 hover:opacity-100', className)} {...props}>
+  <Button variant="ghost" size="icon" className={cn('absolute right-4 top-4 h-8 w-8 rounded-none opacity-70 hover:opacity-100', className)} {...props}>
     {children ?? <X className="h-4 w-4" />}
     <span className="sr-only">Fermer</span>
   </Button>

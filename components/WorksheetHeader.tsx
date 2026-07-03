@@ -16,20 +16,20 @@ const WorksheetHeader: React.FC<WorksheetHeaderProps> = ({ worksheetName, onBack
   };
 
   return (
-    <header className="bg-white/90 backdrop-blur-md border-b border-slate-200 px-6 py-4 sticky top-0 z-20 no-print print:hidden">
+    <header className="bg-white border-b border-[#e0e0e0] px-6 py-4 sticky top-0 z-20 no-print print:hidden">
       <div className="max-w-6xl mx-auto flex items-center justify-between gap-4">
         <div className="flex items-center gap-4 min-w-0">
           <Button
             onClick={onBack}
             variant="ghost"
             size="icon"
-            className="shrink-0 text-slate-500 hover:text-blue-600"
+            className="shrink-0 text-[#525252] hover:text-[#0f62fe]"
             aria-label="Retour au dashboard"
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
-          <div className="w-px h-6 bg-slate-300 shrink-0 mx-1" />
-          <h1 className="text-base md:text-lg font-semibold font-display text-slate-900 truncate" title={worksheetName}>
+          <div className="w-px h-6 bg-[#e0e0e0] shrink-0 mx-1" />
+          <h1 className="text-base md:text-lg font-semibold font-display text-[#161616] truncate" title={worksheetName}>
             {worksheetName}
           </h1>
         </div>
@@ -37,7 +37,7 @@ const WorksheetHeader: React.FC<WorksheetHeaderProps> = ({ worksheetName, onBack
           <Button
             onClick={onOpenSettings}
             variant="outline"
-            className="text-slate-700 hover:text-blue-600 hover:border-blue-600"
+            className="text-[#393939] hover:text-[#0f62fe] hover:border-[#0f62fe]"
             aria-label="Paramètres"
             title="Paramètres de la fiche"
           >
