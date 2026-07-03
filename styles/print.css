@@ -435,3 +435,27 @@
     margin-bottom: 3.2mm !important;
   }
 }
+
+@media print {
+  html.is-print-preparing body::before {
+    content: "Préparation de l'impression…";
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    display: grid;
+    place-items: center;
+    background: #fff;
+    color: #000;
+    font: 600 12pt/1.2 Arial, sans-serif;
+  }
+
+  .print-render-root {
+    font-variant-ligatures: normal;
+    orphans: 3;
+    widows: 3;
+  }
+
+  .exercise-card + .exercise-card {
+    margin-top: 4.5mm !important;
+  }
+}

@@ -1,6 +1,6 @@
 import React, { useRef, useState, useMemo } from 'react';
 import type { Worksheet, WorksheetContent } from '../types';
-import { FileUp, Trash2, Pencil, Search, Code, Calendar, ChevronRight, FileText, Plus, Download, MoreHorizontal, Sparkles, Layers3 } from 'lucide-react';
+import { FileUp, Trash2, Pencil, Search, Code, Calendar, ChevronRight, FileText, Plus, Download, MoreHorizontal, Layers3 } from 'lucide-react';
 import JSONEditorModal from './JSONEditorModal';
 import { Button, buttonVariants } from './ui/button';
 import { Card } from './ui/card';
@@ -146,36 +146,17 @@ const Dashboard: React.FC<DashboardProps> = ({
     }, [filteredWorksheets]);
 
     const visibleWorksheets = sortedWorksheets.slice(0, visibleCount);
-    const totalExercises = useMemo(() => worksheets.reduce((total, ws) => total + (ws.content?.exercises?.length || 0), 0), [worksheets]);
-    const latestWorksheet = sortedWorksheets[0];
 
     return (
         <div className="anthropic-shell min-h-screen">
             <div className="max-w-6xl mx-auto px-6 py-12 md:px-10">
 
             {/* ── Header ── */}
-            <header className="mb-10 overflow-hidden rounded-[2rem] border border-stone-300/70 bg-white/70 p-6 shadow-2xl shadow-stone-900/5 backdrop-blur">
-                <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
-                    <div className="max-w-2xl">
-                        <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-orange-200 bg-orange-50 px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] text-orange-800">
-                            <Sparkles className="h-3.5 w-3.5" /> Studio de fiches
-                        </div>
-                        <h1 className="text-4xl md:text-5xl font-semibold font-display text-stone-950 tracking-tight">Mes Fiches d'Exercices</h1>
-                        <p className="mt-3 text-base leading-7 text-stone-600">Organisez, éditez et imprimez vos supports avec un dashboard plus rapide, plus visuel et centré sur les actions importantes.</p>
-                        <div className="mt-6 grid grid-cols-3 gap-3 max-w-xl">
-                            <div className="rounded-2xl border border-stone-200 bg-white/75 p-4">
-                                <div className="text-2xl font-bold text-stone-950">{worksheets.length}</div>
-                                <div className="text-xs font-semibold uppercase tracking-wider text-stone-500">Fiches</div>
-                            </div>
-                            <div className="rounded-2xl border border-stone-200 bg-white/75 p-4">
-                                <div className="text-2xl font-bold text-stone-950">{totalExercises}</div>
-                                <div className="text-xs font-semibold uppercase tracking-wider text-stone-500">Exercices</div>
-                            </div>
-                            <div className="rounded-2xl border border-stone-200 bg-white/75 p-4">
-                                <div className="truncate text-sm font-bold text-stone-950">{latestWorksheet ? new Date(latestWorksheet.createdAt).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' }) : '—'}</div>
-                                <div className="text-xs font-semibold uppercase tracking-wider text-stone-500">Dernière</div>
-                            </div>
-                        </div>
+            <header className="mb-8 rounded-3xl border border-stone-200/80 bg-white/72 p-5 shadow-sm shadow-stone-900/5 backdrop-blur">
+                <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+                    <div>
+                        <h1 className="text-3xl md:text-4xl font-semibold font-display text-stone-950 tracking-tight">Mes Fiches d'Exercices</h1>
+                        <p className="mt-2 text-sm text-stone-500">{worksheets.length} fiche{worksheets.length !== 1 ? 's' : ''} disponible{worksheets.length !== 1 ? 's' : ''}</p>
                     </div>
                     <div className="flex w-full flex-col gap-3 sm:flex-row lg:w-auto lg:items-center">
                         <div className="relative flex-grow sm:flex-grow-0">
@@ -237,9 +218,9 @@ const Dashboard: React.FC<DashboardProps> = ({
                     {/* "New" card */}
                     <Card 
                         onClick={handleOpenCreateJson}
-                        className="art-card group rounded-2xl border-2 border-dashed border-stone-300 hover:border-orange-700 flex items-center justify-center cursor-pointer transition-all min-h-[200px] bg-white/70 hover:bg-orange-50/70"
+                        className="group rounded-3xl border border-dashed border-stone-200 bg-white/64 hover:border-stone-300 flex items-center justify-center cursor-pointer transition-all min-h-[200px] hover:bg-white/90"
                     >
-                        <div className="flex flex-col items-center gap-3 text-stone-500 group-hover:text-orange-700 transition-colors">
+                        <div className="flex flex-col items-center gap-3 text-stone-500 group-hover:text-stone-800 transition-colors">
                             <Plus className="h-8 w-8" />
                             <span className="text-base font-medium">Créer une nouvelle fiche</span>
                         </div>
@@ -252,7 +233,7 @@ const Dashboard: React.FC<DashboardProps> = ({
                         return (
                             <Card 
                                 key={ws.id} 
-                                className="art-card group rounded-[1.75rem] bg-white/82 hover:border-orange-700 flex flex-col transition-all duration-200 hover:-translate-y-1 hover:shadow-2xl hover:shadow-stone-900/10 cursor-pointer min-h-[220px]"
+                                className="group rounded-3xl border border-stone-200/80 bg-white/78 flex flex-col transition-all duration-200 hover:-translate-y-0.5 hover:border-stone-300 hover:bg-white/95 hover:shadow-lg hover:shadow-stone-900/5 cursor-pointer min-h-[220px]"
                                 onClick={() => onSelectWorksheet(ws.id)}
                                 onDoubleClick={(e) => { e.stopPropagation(); handleEditJson(ws); }}
                                 title="Cliquez pour ouvrir"
@@ -272,7 +253,7 @@ const Dashboard: React.FC<DashboardProps> = ({
                                                />
                                            </form>
                                        ) : (
-                                           <h2 className="text-lg font-semibold font-display text-slate-900 leading-snug line-clamp-2 flex-1 group-hover:text-orange-800 transition-colors">
+                                           <h2 className="text-lg font-semibold font-display text-slate-900 leading-snug line-clamp-2 flex-1 group-hover:text-stone-950 transition-colors">
                                                {ws.name}
                                            </h2>
                                        )}
@@ -285,7 +266,7 @@ const Dashboard: React.FC<DashboardProps> = ({
                                                <Button
                                                    variant="ghost"
                                                    size="icon"
-                                                   className="h-9 w-9 rounded-full text-stone-500 opacity-70 transition hover:bg-orange-50 hover:text-orange-800 group-hover:opacity-100"
+                                                   className="h-9 w-9 rounded-full text-stone-500 opacity-70 transition hover:bg-stone-100 hover:text-stone-900 group-hover:opacity-100"
                                                    aria-label="Actions de la fiche"
                                                    onClick={(e) => { e.stopPropagation(); setOpenActionsId(openActionsId === ws.id ? null : ws.id); }}
                                                >
@@ -309,11 +290,11 @@ const Dashboard: React.FC<DashboardProps> = ({
                                    <div className="mt-auto pt-5 border-t border-stone-200/80 flex items-center justify-between text-base text-stone-600">
                                        <div className="flex items-center gap-5">
                                            <span className="flex items-center gap-2 font-medium">
-                                               <Layers3 className="h-5 w-5 text-orange-700" />
+                                               <Layers3 className="h-5 w-5 text-stone-500" />
                                                {exerciseCount} ex.
                                            </span>
                                            {classNameLabel && (
-                                               <span className="truncate max-w-[150px] bg-orange-50 px-3 py-1 text-sm font-semibold text-orange-800 border border-orange-100">{classNameLabel}</span>
+                                               <span className="truncate max-w-[150px] bg-stone-50 px-3 py-1 text-sm font-semibold text-stone-700 border border-stone-200">{classNameLabel}</span>
                                            )}
                                        </div>
                                        <div className="flex items-center gap-3">
@@ -321,7 +302,7 @@ const Dashboard: React.FC<DashboardProps> = ({
                                                <Calendar className="h-5 w-5 text-slate-400" />
                                                {new Date(ws.createdAt).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })}
                                            </span>
-                                           <ChevronRight className="h-5 w-5 text-slate-300 group-hover:text-orange-700 transition-colors" />
+                                           <ChevronRight className="h-5 w-5 text-slate-300 group-hover:text-stone-500 transition-colors" />
                                        </div>
                                    </div>
                                </div>
