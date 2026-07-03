@@ -1,10 +1,11 @@
 import React, { useRef, useState, useMemo } from 'react';
 import type { Worksheet, WorksheetContent } from '../types';
-import { FileUp, Trash2, Pencil, Search, Code, Calendar, ChevronRight, FileText, Plus, Download } from 'lucide-react';
+import { FileUp, Trash2, Pencil, Search, Code, Calendar, ChevronRight, FileText, Plus, Download, MoreHorizontal, Sparkles, Layers3 } from 'lucide-react';
 import JSONEditorModal from './JSONEditorModal';
 import { Button, buttonVariants } from './ui/button';
 import { Card } from './ui/card';
 import { Input } from './ui/input';
+import { DropdownMenu, DropdownMenuItem } from './ui/dropdown-menu';
 
 interface DashboardProps {
     worksheets: Worksheet[];
@@ -36,6 +37,7 @@ const Dashboard: React.FC<DashboardProps> = ({
     const [isJsonModalOpen, setIsJsonModalOpen] = useState(false);
     const [jsonMode, setJsonMode] = useState<'create' | 'edit'>('create');
     const [editingWorksheet, setEditingWorksheet] = useState<Worksheet | null>(null);
+    const [openActionsId, setOpenActionsId] = useState<string | null>(null);
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
@@ -144,19 +146,38 @@ const Dashboard: React.FC<DashboardProps> = ({
     }, [filteredWorksheets]);
 
     const visibleWorksheets = sortedWorksheets.slice(0, visibleCount);
+    const totalExercises = useMemo(() => worksheets.reduce((total, ws) => total + (ws.content?.exercises?.length || 0), 0), [worksheets]);
+    const latestWorksheet = sortedWorksheets[0];
 
     return (
         <div className="anthropic-shell min-h-screen">
             <div className="max-w-6xl mx-auto px-6 py-12 md:px-10">
 
             {/* ── Header ── */}
-            <header className="mb-12 border-b border-stone-300/70 pb-6">
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6">
-                    <div>
-                        <h1 className="text-3xl md:text-4xl font-semibold font-display text-stone-900 tracking-tight">Mes Fiches d'Exercices</h1>
-                        <p className="text-stone-600 mt-2 text-base">{worksheets.length} fiche{worksheets.length !== 1 ? 's' : ''} disponible{worksheets.length !== 1 ? 's' : ''}</p>
+            <header className="mb-10 overflow-hidden rounded-[2rem] border border-stone-300/70 bg-white/70 p-6 shadow-2xl shadow-stone-900/5 backdrop-blur">
+                <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+                    <div className="max-w-2xl">
+                        <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-orange-200 bg-orange-50 px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] text-orange-800">
+                            <Sparkles className="h-3.5 w-3.5" /> Studio de fiches
+                        </div>
+                        <h1 className="text-4xl md:text-5xl font-semibold font-display text-stone-950 tracking-tight">Mes Fiches d'Exercices</h1>
+                        <p className="mt-3 text-base leading-7 text-stone-600">Organisez, éditez et imprimez vos supports avec un dashboard plus rapide, plus visuel et centré sur les actions importantes.</p>
+                        <div className="mt-6 grid grid-cols-3 gap-3 max-w-xl">
+                            <div className="rounded-2xl border border-stone-200 bg-white/75 p-4">
+                                <div className="text-2xl font-bold text-stone-950">{worksheets.length}</div>
+                                <div className="text-xs font-semibold uppercase tracking-wider text-stone-500">Fiches</div>
+                            </div>
+                            <div className="rounded-2xl border border-stone-200 bg-white/75 p-4">
+                                <div className="text-2xl font-bold text-stone-950">{totalExercises}</div>
+                                <div className="text-xs font-semibold uppercase tracking-wider text-stone-500">Exercices</div>
+                            </div>
+                            <div className="rounded-2xl border border-stone-200 bg-white/75 p-4">
+                                <div className="truncate text-sm font-bold text-stone-950">{latestWorksheet ? new Date(latestWorksheet.createdAt).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' }) : '—'}</div>
+                                <div className="text-xs font-semibold uppercase tracking-wider text-stone-500">Dernière</div>
+                            </div>
+                        </div>
                     </div>
-                    <div className="flex items-center gap-3 w-full sm:w-auto">
+                    <div className="flex w-full flex-col gap-3 sm:flex-row lg:w-auto lg:items-center">
                         <div className="relative flex-grow sm:flex-grow-0">
                             <Search className="h-5 w-5 text-slate-400 absolute top-1/2 left-3.5 -translate-y-1/2 pointer-events-none" />
                             <Input
@@ -164,7 +185,7 @@ const Dashboard: React.FC<DashboardProps> = ({
                                 placeholder="Rechercher..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                className="w-full sm:w-64 pl-10"
+                                className="h-11 w-full sm:w-72 rounded-xl bg-white/90 pl-10"
                                 aria-label="Rechercher une fiche par nom"
                             />
                         </div>
@@ -172,7 +193,7 @@ const Dashboard: React.FC<DashboardProps> = ({
                         <Button
                             onClick={handleExportAll}
                             variant="secondary"
-                            className="shrink-0 bg-stone-900 text-orange-50 hover:bg-stone-800"
+                            className="h-11 shrink-0 rounded-xl bg-stone-900 text-orange-50 hover:bg-stone-800"
                             title="Exporter toutes les fiches en JSON"
                         >
                             <Download className="h-5 w-5" />
@@ -183,7 +204,7 @@ const Dashboard: React.FC<DashboardProps> = ({
                             onClick={handleOpenCreateJson}
                             variant="outline"
                             size="icon"
-                            className="text-slate-600 hover:text-blue-600 hover:border-blue-600 shrink-0"
+                            className="h-11 w-11 shrink-0 rounded-xl text-stone-600 hover:text-orange-800 hover:border-orange-700"
                             title="Editeur JSON"
                             aria-label="Editeur JSON"
                         >
@@ -200,7 +221,7 @@ const Dashboard: React.FC<DashboardProps> = ({
                         />
                         <label
                             htmlFor="json-importer"
-                            className={buttonVariants({ className: 'cursor-pointer shrink-0' })}
+                            className={buttonVariants({ className: 'h-11 cursor-pointer shrink-0 rounded-xl' })}
                         >
                             <FileUp className="h-5 w-5" />
                             <span>Importer JSON</span>
@@ -231,7 +252,7 @@ const Dashboard: React.FC<DashboardProps> = ({
                         return (
                             <Card 
                                 key={ws.id} 
-                                className="art-card group rounded-2xl bg-white/80 hover:border-orange-700 flex flex-col transition-all duration-200 hover:shadow-xl hover:shadow-stone-900/10 cursor-pointer min-h-[200px]"
+                                className="art-card group rounded-[1.75rem] bg-white/82 hover:border-orange-700 flex flex-col transition-all duration-200 hover:-translate-y-1 hover:shadow-2xl hover:shadow-stone-900/10 cursor-pointer min-h-[220px]"
                                 onClick={() => onSelectWorksheet(ws.id)}
                                 onDoubleClick={(e) => { e.stopPropagation(); handleEditJson(ws); }}
                                 title="Cliquez pour ouvrir"
@@ -256,41 +277,43 @@ const Dashboard: React.FC<DashboardProps> = ({
                                            </h2>
                                        )}
 
-                                       {/* Hover actions */}
-                                       <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity shrink-0" onClick={(e) => e.stopPropagation()}>
-                                           <button 
-                                               onClick={() => handleRename(ws)} 
-                                               className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-none transition" 
-                                               aria-label="Renommer"
-                                           >
-                                               <Pencil className="h-5 w-5" />
-                                           </button>
-                                           <button 
-                                               onClick={() => handleEditJson(ws)} 
-                                               className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-none transition" 
-                                               aria-label="Editer JSON"
-                                           >
-                                               <Code className="h-5 w-5" />
-                                           </button>
-                                           <button 
-                                               onClick={() => onDeleteWorksheet(ws.id)} 
-                                               className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-none transition" 
-                                               aria-label="Supprimer"
-                                           >
-                                               <Trash2 className="h-5 w-5" />
-                                           </button>
-                                       </div>
+                                       {/* Actions regroupées */}
+                                       <DropdownMenu
+                                           open={openActionsId === ws.id}
+                                           onOpenChange={(open) => setOpenActionsId(open ? ws.id : null)}
+                                           trigger={
+                                               <Button
+                                                   variant="ghost"
+                                                   size="icon"
+                                                   className="h-9 w-9 rounded-full text-stone-500 opacity-70 transition hover:bg-orange-50 hover:text-orange-800 group-hover:opacity-100"
+                                                   aria-label="Actions de la fiche"
+                                                   onClick={(e) => { e.stopPropagation(); setOpenActionsId(openActionsId === ws.id ? null : ws.id); }}
+                                               >
+                                                   <MoreHorizontal className="h-5 w-5" />
+                                               </Button>
+                                           }
+                                       >
+                                           <DropdownMenuItem onClick={() => { handleRename(ws); setOpenActionsId(null); }}>
+                                               <Pencil className="h-4 w-4" /> Renommer
+                                           </DropdownMenuItem>
+                                           <DropdownMenuItem onClick={() => { handleEditJson(ws); setOpenActionsId(null); }}>
+                                               <Code className="h-4 w-4" /> Éditer JSON
+                                           </DropdownMenuItem>
+                                           <DropdownMenuItem className="text-red-700 hover:bg-red-50 hover:text-red-800" onClick={() => { onDeleteWorksheet(ws.id); setOpenActionsId(null); }}>
+                                               <Trash2 className="h-4 w-4" /> Supprimer
+                                           </DropdownMenuItem>
+                                       </DropdownMenu>
                                    </div>
 
                                    {/* Meta info */}
-                                   <div className="mt-auto pt-5 border-t border-slate-200 flex items-center justify-between text-base text-slate-600">
+                                   <div className="mt-auto pt-5 border-t border-stone-200/80 flex items-center justify-between text-base text-stone-600">
                                        <div className="flex items-center gap-5">
                                            <span className="flex items-center gap-2 font-medium">
-                                               <FileText className="h-5 w-5 text-slate-400" />
+                                               <Layers3 className="h-5 w-5 text-orange-700" />
                                                {exerciseCount} ex.
                                            </span>
                                            {classNameLabel && (
-                                               <span className="truncate max-w-[150px] bg-slate-100 px-3 py-1 text-sm font-semibold text-slate-700 border border-slate-200">{classNameLabel}</span>
+                                               <span className="truncate max-w-[150px] bg-orange-50 px-3 py-1 text-sm font-semibold text-orange-800 border border-orange-100">{classNameLabel}</span>
                                            )}
                                        </div>
                                        <div className="flex items-center gap-3">
@@ -298,7 +321,7 @@ const Dashboard: React.FC<DashboardProps> = ({
                                                <Calendar className="h-5 w-5 text-slate-400" />
                                                {new Date(ws.createdAt).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })}
                                            </span>
-                                           <ChevronRight className="h-5 w-5 text-slate-300 group-hover:text-blue-600 transition-colors" />
+                                           <ChevronRight className="h-5 w-5 text-slate-300 group-hover:text-orange-700 transition-colors" />
                                        </div>
                                    </div>
                                </div>
@@ -309,12 +332,13 @@ const Dashboard: React.FC<DashboardProps> = ({
                 
                 {visibleCount < sortedWorksheets.length && (
                     <div className="mt-10 text-center">
-                        <button
+                        <Button
                             onClick={() => setVisibleCount(prev => prev + 6)}
-                            className="bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 font-medium py-2.5 px-8 rounded-none transition shadow-sm"
+                            variant="outline"
+                            className="rounded-xl px-8"
                         >
                             Voir plus
-                        </button>
+                        </Button>
                     </div>
                 )}
                 </>
@@ -331,13 +355,10 @@ const Dashboard: React.FC<DashboardProps> = ({
                             <FileText className="h-10 w-10 text-slate-300 mx-auto mb-4" />
                             <h2 className="text-xl font-semibold text-slate-600">Aucune fiche</h2>
                             <p className="text-stone-600 mt-2 text-base mb-6">Importez un fichier JSON ou créez une nouvelle fiche pour commencer.</p>
-                            <button
-                                onClick={handleOpenCreateJson}
-                                className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-6 rounded-none transition shadow-sm"
-                            >
+                            <Button onClick={handleOpenCreateJson} className="rounded-xl">
                                 <Plus className="h-5 w-5" />
                                 Créer une fiche
-                            </button>
+                            </Button>
                         </>
                     )}
                 </div>
