@@ -393,3 +393,69 @@
     margin-bottom: 0 !important;
   }
 }
+@media print {
+  .print-render-root {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .answer-space {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  .math-text {
+    hyphens: none !important;
+    overflow-wrap: normal !important;
+  }
+
+  img, svg {
+    image-rendering: auto !important;
+  }
+}
+
+@media print {
+  .exercise-badge,
+  .exercise-badge-screen {
+    background: #fff !important;
+    color: #000 !important;
+    border: 0.8pt solid #000 !important;
+    padding: 0.8mm 2.4mm !important;
+    border-radius: 2.5pt !important;
+    font-size: 8pt !important;
+    letter-spacing: 0.055em !important;
+    line-height: 1 !important;
+    min-height: auto !important;
+    box-shadow: none !important;
+  }
+
+  .exercise-title {
+    margin-bottom: 3.2mm !important;
+  }
+}
+
+@media print {
+  html.is-print-preparing body::before {
+    content: "Préparation de l'impression…";
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    display: grid;
+    place-items: center;
+    background: #fff;
+    color: #000;
+    font: 600 12pt/1.2 Arial, sans-serif;
+  }
+
+  .print-render-root {
+    font-variant-ligatures: normal;
+    orphans: 3;
+    widows: 3;
+  }
+
+  .exercise-card + .exercise-card {
+    margin-top: 4.5mm !important;
+  }
+}

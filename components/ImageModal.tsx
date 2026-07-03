@@ -1,5 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { X, UploadCloud, Link as LinkIcon, Image as ImageIcon, CheckCircle2, AlertCircle } from 'lucide-react';
+import { UploadCloud, Link as LinkIcon, Image as ImageIcon, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Button } from './ui/button';
+import { Input } from './ui/input';
+import { Label } from './ui/label';
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from './ui/dialog';
 import type { ImageConfig } from '../types';
 
 interface ImageModalProps {
@@ -29,8 +33,6 @@ const ImageModal: React.FC<ImageModalProps> = ({ isOpen, onClose, onSave, initia
       setError(null);
     }
   }, [isOpen, initialImage]);
-
-  if (!isOpen) return null;
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -96,27 +98,20 @@ const ImageModal: React.FC<ImageModalProps> = ({ isOpen, onClose, onSave, initia
   };
 
   return (
-    <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-none border border-slate-300 shadow-2xl w-full max-w-2xl flex flex-col max-h-[90vh]">
-        
-        {/* Header */}
-        <div className="flex items-center justify-between p-5 border-b border-slate-200 bg-slate-50">
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent onOpenChange={(open) => !open && onClose()} className="max-w-2xl gap-0 overflow-hidden p-0 max-h-[90vh]">
+        <DialogHeader className="flex-row items-center justify-between space-y-0 p-5 border-b border-slate-200 bg-slate-50 text-left">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-blue-100 text-blue-700 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-md bg-blue-100 text-blue-700 flex items-center justify-center">
               <ImageIcon className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-xl font-bold font-display text-slate-900">Configuration de l'image</h2>
-              <p className="text-sm text-slate-500">Ajoutez et personnalisez une image pour cette question</p>
+              <DialogTitle className="text-xl font-bold font-display text-slate-900">Configuration de l'image</DialogTitle>
+              <DialogDescription>Ajoutez et personnalisez une image pour cette question</DialogDescription>
             </div>
           </div>
-          <button 
-            onClick={onClose}
-            className="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-200 transition-colors"
-          >
-            <X className="w-5 h-5" />
-          </button>
-        </div>
+          <DialogClose onClick={onClose} />
+        </DialogHeader>
 
         {/* Body */}
         <div className="p-6 overflow-y-auto flex-1 flex flex-col gap-6">
@@ -133,9 +128,10 @@ const ImageModal: React.FC<ImageModalProps> = ({ isOpen, onClose, onSave, initia
             <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider">Source de l'image</h3>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <button
+              <Button
                 onClick={() => fileInputRef.current?.click()}
-                className="flex flex-col items-center justify-center gap-3 p-6 border-2 border-dashed border-slate-300 hover:border-blue-500 hover:bg-blue-50 transition-colors group"
+                variant="outline"
+                className="h-auto flex-col items-center justify-center gap-3 p-6 border-2 border-dashed border-slate-300 hover:border-blue-500 hover:bg-blue-50 group"
               >
                 <div className="w-12 h-12 bg-slate-100 group-hover:bg-blue-100 text-slate-500 group-hover:text-blue-600 rounded-full flex items-center justify-center transition-colors">
                   <UploadCloud className="w-6 h-6" />
@@ -144,7 +140,7 @@ const ImageModal: React.FC<ImageModalProps> = ({ isOpen, onClose, onSave, initia
                   <span className="block font-medium text-slate-900">Parcourir les fichiers</span>
                   <span className="block text-xs text-slate-500 mt-1">JPG, PNG, GIF (max 5MB)</span>
                 </div>
-              </button>
+              </Button>
               <input 
                 type="file" 
                 ref={fileInputRef} 
@@ -154,16 +150,16 @@ const ImageModal: React.FC<ImageModalProps> = ({ isOpen, onClose, onSave, initia
               />
 
               <div className="flex flex-col justify-center gap-3 p-6 border border-slate-200 bg-slate-50">
-                <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
+                <Label className="text-sm font-medium text-slate-700 flex items-center gap-2">
                   <LinkIcon className="w-4 h-4" />
                   Ou via URL
-                </label>
-                <input
+                </Label>
+                <Input
                   type="text"
                   value={src.startsWith('data:') ? '' : src}
                   onChange={(e) => setSrc(e.target.value)}
                   placeholder="https://exemple.com/image.jpg"
-                  className="w-full px-3 py-2 border border-slate-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none text-sm"
+                  className="text-sm"
                 />
               </div>
             </div>
@@ -192,8 +188,8 @@ const ImageModal: React.FC<ImageModalProps> = ({ isOpen, onClose, onSave, initia
                 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-medium text-slate-700">Largeur (px)</label>
-                    <input
+                    <Label className="text-xs font-medium text-slate-700">Largeur (px)</Label>
+                    <Input
                       type="number"
                       value={width}
                       onChange={(e) => setWidth(Number(e.target.value))}
@@ -201,8 +197,8 @@ const ImageModal: React.FC<ImageModalProps> = ({ isOpen, onClose, onSave, initia
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs font-medium text-slate-700">Hauteur (px)</label>
-                    <input
+                    <Label className="text-xs font-medium text-slate-700">Hauteur (px)</Label>
+                    <Input
                       type="number"
                       value={height}
                       onChange={(e) => setHeight(Number(e.target.value))}
@@ -212,7 +208,7 @@ const ImageModal: React.FC<ImageModalProps> = ({ isOpen, onClose, onSave, initia
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-slate-700">Alignement</label>
+                  <Label className="text-xs font-medium text-slate-700">Alignement</Label>
                   <div className="flex border border-slate-300">
                     {(['left', 'center', 'right'] as const).map((pos) => (
                       <button
@@ -231,8 +227,8 @@ const ImageModal: React.FC<ImageModalProps> = ({ isOpen, onClose, onSave, initia
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-slate-700">Légende (Optionnelle)</label>
-                  <input
+                  <Label className="text-xs font-medium text-slate-700">Légende (Optionnelle)</Label>
+                  <Input
                     type="text"
                     value={caption}
                     onChange={(e) => setCaption(e.target.value)}
@@ -248,35 +244,28 @@ const ImageModal: React.FC<ImageModalProps> = ({ isOpen, onClose, onSave, initia
         </div>
 
         {/* Footer */}
-        <div className="p-5 border-t border-slate-200 bg-slate-50 flex justify-between items-center">
+        <DialogFooter className="p-5 border-t border-slate-200 bg-slate-50 flex-row justify-between items-center sm:space-x-0">
           {initialImage ? (
-            <button
+            <Button
               onClick={handleRemove}
-              className="px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 border border-transparent hover:border-red-200 transition-colors"
+              variant="destructive"
             >
               Supprimer l'image
-            </button>
+            </Button>
           ) : <div></div>}
           
           <div className="flex gap-3">
-            <button
-              onClick={onClose}
-              className="px-5 py-2.5 text-sm font-medium text-slate-700 bg-white border border-slate-300 hover:bg-slate-50 transition-colors"
-            >
+            <Button onClick={onClose} variant="outline">
               Annuler
-            </button>
-            <button
-              onClick={handleSave}
-              className="px-5 py-2.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 transition-colors flex items-center gap-2"
-            >
+            </Button>
+            <Button onClick={handleSave}>
               <CheckCircle2 className="w-4 h-4" />
               {initialImage ? 'Mettre à jour' : 'Ajouter l\'image'}
-            </button>
+            </Button>
           </div>
-        </div>
-
-      </div>
-    </div>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 };
 

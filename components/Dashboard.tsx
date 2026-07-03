@@ -1,7 +1,11 @@
 import React, { useRef, useState, useMemo } from 'react';
 import type { Worksheet, WorksheetContent } from '../types';
-import { FileUp, Trash2, Pencil, Search, Code, Calendar, ChevronRight, FileText, Plus, Download } from 'lucide-react';
+import { FileUp, Trash2, Pencil, Search, Code, Calendar, ChevronRight, FileText, Plus, Download, MoreHorizontal, Layers3 } from 'lucide-react';
 import JSONEditorModal from './JSONEditorModal';
+import { Button, buttonVariants } from './ui/button';
+import { Card } from './ui/card';
+import { Input } from './ui/input';
+import { DropdownMenu, DropdownMenuItem } from './ui/dropdown-menu';
 
 interface DashboardProps {
     worksheets: Worksheet[];
@@ -33,6 +37,7 @@ const Dashboard: React.FC<DashboardProps> = ({
     const [isJsonModalOpen, setIsJsonModalOpen] = useState(false);
     const [jsonMode, setJsonMode] = useState<'create' | 'edit'>('create');
     const [editingWorksheet, setEditingWorksheet] = useState<Worksheet | null>(null);
+    const [openActionsId, setOpenActionsId] = useState<string | null>(null);
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
@@ -143,46 +148,49 @@ const Dashboard: React.FC<DashboardProps> = ({
     const visibleWorksheets = sortedWorksheets.slice(0, visibleCount);
 
     return (
-        <div className="min-h-screen bg-slate-50">
+        <div className="carbon-shell min-h-screen">
             <div className="max-w-6xl mx-auto px-6 py-12 md:px-10">
 
             {/* ── Header ── */}
-            <header className="mb-12 border-b border-slate-200 pb-6">
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6">
+            <header className="mb-8 rounded-none border border-[#e0e0e0] bg-white p-5 shadow-none backdrop-blur">
+                <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
                     <div>
-                        <h1 className="text-3xl md:text-4xl font-semibold font-display text-slate-900 tracking-tight">Mes Fiches d'Exercices</h1>
-                        <p className="text-slate-500 mt-2 text-base">{worksheets.length} fiche{worksheets.length !== 1 ? 's' : ''} disponible{worksheets.length !== 1 ? 's' : ''}</p>
+                        <h1 className="text-3xl md:text-4xl font-semibold font-display text-[#161616] tracking-tight">Mes Fiches d'Exercices</h1>
+                        <p className="mt-2 text-sm text-[#525252]">{worksheets.length} fiche{worksheets.length !== 1 ? 's' : ''} disponible{worksheets.length !== 1 ? 's' : ''}</p>
                     </div>
-                    <div className="flex items-center gap-3 w-full sm:w-auto">
+                    <div className="flex w-full flex-col gap-3 sm:flex-row lg:w-auto lg:items-center">
                         <div className="relative flex-grow sm:flex-grow-0">
                             <Search className="h-5 w-5 text-slate-400 absolute top-1/2 left-3.5 -translate-y-1/2 pointer-events-none" />
-                            <input
+                            <Input
                                 type="text"
                                 placeholder="Rechercher..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                className="w-full sm:w-64 pl-10 pr-4 py-2.5 rounded-none border border-slate-300 bg-white text-base focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 transition placeholder:text-slate-400 outline-none"
+                                className="h-11 w-full sm:w-72 rounded-none bg-white pl-10"
                                 aria-label="Rechercher une fiche par nom"
                             />
                         </div>
                         
-                        <button
+                        <Button
                             onClick={handleExportAll}
-                            className="flex items-center bg-slate-800 hover:bg-slate-900 text-white font-medium py-2.5 px-5 rounded-none cursor-pointer transition shrink-0 text-base gap-2 shadow-sm"
+                            variant="secondary"
+                            className="h-11 shrink-0 rounded-none bg-[#0f62fe] text-white hover:bg-[#0353e9]"
                             title="Exporter toutes les fiches en JSON"
                         >
                             <Download className="h-5 w-5" />
                             <span className="hidden sm:inline">Exporter JSON</span>
-                        </button>
+                        </Button>
 
-                        <button
+                        <Button
                             onClick={handleOpenCreateJson}
-                            className="p-2.5 border border-slate-300 bg-white text-slate-600 hover:text-blue-600 hover:border-blue-600 rounded-none transition shrink-0"
+                            variant="outline"
+                            size="icon"
+                            className="h-11 w-11 shrink-0 rounded-none text-[#525252] hover:text-[#0f62fe] hover:border-[#0f62fe]"
                             title="Editeur JSON"
                             aria-label="Editeur JSON"
                         >
                             <Code className="h-5 w-5" />
-                        </button>
+                        </Button>
 
                         <input
                             type="file"
@@ -194,7 +202,7 @@ const Dashboard: React.FC<DashboardProps> = ({
                         />
                         <label
                             htmlFor="json-importer"
-                            className="flex items-center bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-5 rounded-none cursor-pointer transition shrink-0 text-base gap-2 shadow-sm"
+                            className={buttonVariants({ className: 'h-11 cursor-pointer shrink-0 rounded-none' })}
                         >
                             <FileUp className="h-5 w-5" />
                             <span>Importer JSON</span>
@@ -208,24 +216,24 @@ const Dashboard: React.FC<DashboardProps> = ({
                 <>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {/* "New" card */}
-                    <div 
+                    <Card 
                         onClick={handleOpenCreateJson}
-                        className="group rounded-none border-2 border-dashed border-slate-300 hover:border-blue-600 flex items-center justify-center cursor-pointer transition-all min-h-[200px] bg-white hover:bg-blue-50/50"
+                        className="group rounded-none border border-dashed border-[#e0e0e0] bg-white hover:border-[#8d8d8d] flex items-center justify-center cursor-pointer transition-all min-h-[200px] hover:bg-white"
                     >
-                        <div className="flex flex-col items-center gap-3 text-slate-500 group-hover:text-blue-600 transition-colors">
+                        <div className="flex flex-col items-center gap-3 text-[#525252] group-hover:text-[#262626] transition-colors">
                             <Plus className="h-8 w-8" />
                             <span className="text-base font-medium">Créer une nouvelle fiche</span>
                         </div>
-                    </div>
+                    </Card>
 
                     {visibleWorksheets.map((ws) => {
                         const classNameLabel = ws.content?.settings?.className?.trim() || '';
                         const exerciseCount = ws.content?.exercises?.length || 0;
 
                         return (
-                            <div 
+                            <Card 
                                 key={ws.id} 
-                                className="group bg-white rounded-none border border-slate-300 hover:border-blue-600 flex flex-col transition-all duration-200 hover:shadow-lg cursor-pointer min-h-[200px]"
+                                className="group rounded-none border border-[#e0e0e0] bg-white flex flex-col transition-all duration-200 hover:border-[#8d8d8d] hover:bg-white hover:shadow-none cursor-pointer min-h-[220px]"
                                 onClick={() => onSelectWorksheet(ws.id)}
                                 onDoubleClick={(e) => { e.stopPropagation(); handleEditJson(ws); }}
                                 title="Cliquez pour ouvrir"
@@ -241,50 +249,52 @@ const Dashboard: React.FC<DashboardProps> = ({
                                                    onChange={(e) => setNewName(e.target.value)}
                                                    onBlur={handleSaveRename}
                                                    autoFocus
-                                                   className="text-lg font-semibold font-display text-slate-900 w-full border-b-2 border-blue-600 focus:outline-none bg-transparent pb-1"
+                                                   className="text-lg font-semibold font-display text-[#161616] w-full border-b-2 border-blue-600 focus:outline-none bg-transparent pb-1"
                                                />
                                            </form>
                                        ) : (
-                                           <h2 className="text-lg font-semibold font-display text-slate-900 leading-snug line-clamp-2 flex-1 group-hover:text-blue-700 transition-colors">
+                                           <h2 className="text-lg font-semibold font-display text-[#161616] leading-snug line-clamp-2 flex-1 group-hover:text-[#161616] transition-colors">
                                                {ws.name}
                                            </h2>
                                        )}
 
-                                       {/* Hover actions */}
-                                       <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity shrink-0" onClick={(e) => e.stopPropagation()}>
-                                           <button 
-                                               onClick={() => handleRename(ws)} 
-                                               className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-none transition" 
-                                               aria-label="Renommer"
-                                           >
-                                               <Pencil className="h-5 w-5" />
-                                           </button>
-                                           <button 
-                                               onClick={() => handleEditJson(ws)} 
-                                               className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-none transition" 
-                                               aria-label="Editer JSON"
-                                           >
-                                               <Code className="h-5 w-5" />
-                                           </button>
-                                           <button 
-                                               onClick={() => onDeleteWorksheet(ws.id)} 
-                                               className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-none transition" 
-                                               aria-label="Supprimer"
-                                           >
-                                               <Trash2 className="h-5 w-5" />
-                                           </button>
-                                       </div>
+                                       {/* Actions regroupées */}
+                                       <DropdownMenu
+                                           open={openActionsId === ws.id}
+                                           onOpenChange={(open) => setOpenActionsId(open ? ws.id : null)}
+                                           trigger={
+                                               <Button
+                                                   variant="ghost"
+                                                   size="icon"
+                                                   className="h-9 w-9 rounded-none text-[#525252] opacity-70 transition hover:bg-[#e0e0e0] hover:text-[#161616] group-hover:opacity-100"
+                                                   aria-label="Actions de la fiche"
+                                                   onClick={(e) => { e.stopPropagation(); setOpenActionsId(openActionsId === ws.id ? null : ws.id); }}
+                                               >
+                                                   <MoreHorizontal className="h-5 w-5" />
+                                               </Button>
+                                           }
+                                       >
+                                           <DropdownMenuItem onClick={() => { handleRename(ws); setOpenActionsId(null); }}>
+                                               <Pencil className="h-4 w-4" /> Renommer
+                                           </DropdownMenuItem>
+                                           <DropdownMenuItem onClick={() => { handleEditJson(ws); setOpenActionsId(null); }}>
+                                               <Code className="h-4 w-4" /> Éditer JSON
+                                           </DropdownMenuItem>
+                                           <DropdownMenuItem className="text-red-700 hover:bg-red-50 hover:text-red-800" onClick={() => { onDeleteWorksheet(ws.id); setOpenActionsId(null); }}>
+                                               <Trash2 className="h-4 w-4" /> Supprimer
+                                           </DropdownMenuItem>
+                                       </DropdownMenu>
                                    </div>
 
                                    {/* Meta info */}
-                                   <div className="mt-auto pt-5 border-t border-slate-200 flex items-center justify-between text-base text-slate-600">
+                                   <div className="mt-auto pt-5 border-t border-[#e0e0e0] flex items-center justify-between text-base text-[#525252]">
                                        <div className="flex items-center gap-5">
                                            <span className="flex items-center gap-2 font-medium">
-                                               <FileText className="h-5 w-5 text-slate-400" />
+                                               <Layers3 className="h-5 w-5 text-[#525252]" />
                                                {exerciseCount} ex.
                                            </span>
                                            {classNameLabel && (
-                                               <span className="truncate max-w-[150px] bg-slate-100 px-3 py-1 text-sm font-semibold text-slate-700 border border-slate-200">{classNameLabel}</span>
+                                               <span className="truncate max-w-[150px] bg-[#f4f4f4] px-3 py-1 text-sm font-semibold text-[#393939] border border-[#e0e0e0]">{classNameLabel}</span>
                                            )}
                                        </div>
                                        <div className="flex items-center gap-3">
@@ -292,23 +302,24 @@ const Dashboard: React.FC<DashboardProps> = ({
                                                <Calendar className="h-5 w-5 text-slate-400" />
                                                {new Date(ws.createdAt).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })}
                                            </span>
-                                           <ChevronRight className="h-5 w-5 text-slate-300 group-hover:text-blue-600 transition-colors" />
+                                           <ChevronRight className="h-5 w-5 text-slate-300 group-hover:text-[#525252] transition-colors" />
                                        </div>
                                    </div>
                                </div>
-                            </div>
+                            </Card>
                         );
                     })}
                 </div>
                 
                 {visibleCount < sortedWorksheets.length && (
                     <div className="mt-10 text-center">
-                        <button
+                        <Button
                             onClick={() => setVisibleCount(prev => prev + 6)}
-                            className="bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 font-medium py-2.5 px-8 rounded-none transition shadow-sm"
+                            variant="outline"
+                            className="rounded-none px-8"
                         >
                             Voir plus
-                        </button>
+                        </Button>
                     </div>
                 )}
                 </>
@@ -318,20 +329,17 @@ const Dashboard: React.FC<DashboardProps> = ({
                         <>
                             <Search className="h-10 w-10 text-slate-300 mx-auto mb-4" />
                             <h2 className="text-xl font-semibold text-slate-600">Aucun résultat</h2>
-                            <p className="text-slate-500 mt-2 text-base">Essayez avec d'autres mots-clés.</p>
+                            <p className="text-[#525252] mt-2 text-base">Essayez avec d'autres mots-clés.</p>
                         </>
                     ) : (
                         <>
                             <FileText className="h-10 w-10 text-slate-300 mx-auto mb-4" />
                             <h2 className="text-xl font-semibold text-slate-600">Aucune fiche</h2>
-                            <p className="text-slate-500 mt-2 text-base mb-6">Importez un fichier JSON ou créez une nouvelle fiche pour commencer.</p>
-                            <button
-                                onClick={handleOpenCreateJson}
-                                className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-6 rounded-none transition shadow-sm"
-                            >
+                            <p className="text-[#525252] mt-2 text-base mb-6">Importez un fichier JSON ou créez une nouvelle fiche pour commencer.</p>
+                            <Button onClick={handleOpenCreateJson} className="rounded-none">
                                 <Plus className="h-5 w-5" />
                                 Créer une fiche
-                            </button>
+                            </Button>
                         </>
                     )}
                 </div>

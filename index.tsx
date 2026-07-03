@@ -4,6 +4,7 @@ import App from './App';
 import { MathJaxContext } from 'better-react-mathjax';
 
 // 🔧 IMPORTANT : Import du fichier CSS pour l'impression
+import './index.css';
 import './styles/print.css';
 
 const rootElement = document.getElementById('root');
@@ -12,8 +13,11 @@ if (!rootElement) {
 }
 
 const config = {
-  loader: { load: ["input/tex", "output/svg"] }, // Changé de 'chtml' à 'svg' pour une qualité vectorielle
+  startup: { typeset: true },
+  options: { enableMenu: false, renderActions: { addMenu: [] } },
+  loader: { load: ["input/tex", "output/svg", "[tex]/ams", "[tex]/mathtools"] },
   tex: {
+    packages: { '[+]': ['ams', 'mathtools'] },
     inlineMath: [
       ["$", "$"],
       ["\\(", "\\)"],
@@ -24,7 +28,10 @@ const config = {
     ],
   },
   svg: {
-    fontCache: 'global' // Améliore les performances de rendu SVG
+    fontCache: 'global',
+    mtextInheritFont: true,
+    merrorInheritFont: true,
+    internalSpeechTitles: false,
   },
 };
 

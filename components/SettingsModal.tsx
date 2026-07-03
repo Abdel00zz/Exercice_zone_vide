@@ -1,6 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import type { Worksheet, WorksheetContent } from '../types';
-import { GripVertical, Trash2, X, UploadCloud, ImageOff, Info, Image, LayoutTemplate, ListOrdered } from 'lucide-react';
+import { GripVertical, Trash2, UploadCloud, ImageOff, Info, Image, LayoutTemplate, ListOrdered } from 'lucide-react';
+import { Button } from './ui/button';
+import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle } from './ui/dialog';
+import { Input } from './ui/input';
+import { Label } from './ui/label';
+import { Select } from './ui/select';
 
 const CLASS_OPTIONS = [
 	'Tronc Commun Scientifique',
@@ -215,22 +220,12 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, workshee
 	const logoPreview = currentSettings.logoDataUrl;
 
 	return (
-		<div
-			className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 flex justify-center items-center p-4"
-			onClick={onClose}
-			role="dialog"
-			aria-modal="true"
-		>
-			<div
-				className="bg-white rounded-none shadow-2xl border border-slate-300 w-full max-w-2xl max-h-[90vh] flex flex-col"
-				onClick={e => e.stopPropagation()}
-			>
-				<header className="flex justify-between items-center px-6 py-4 border-b border-slate-200">
-					<h2 className="text-lg font-bold font-display text-slate-900">Paramètres</h2>
-					<button onClick={onClose} className="p-1.5 rounded-none hover:bg-slate-100 transition" aria-label="Fermer">
-						<X className="h-5 w-5 text-slate-500" />
-					</button>
-				</header>
+		<Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+			<DialogContent onOpenChange={(open) => !open && onClose()} className="max-w-2xl gap-0 overflow-hidden p-0 max-h-[90vh]">
+				<DialogHeader className="flex-row items-center justify-between space-y-0 px-6 py-4 border-b border-border bg-card text-left">
+					<DialogTitle className="text-lg font-bold font-display text-foreground">Paramètres</DialogTitle>
+					<DialogClose onClick={onClose} />
+				</DialogHeader>
 
 			<main className="p-6 overflow-y-auto text-gray-900 custom-scrollbar">
 					<input
@@ -254,28 +249,28 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, workshee
 							</div>
 							<div className="grid gap-6 md:grid-cols-2 ml-0 md:ml-12">
 								<div>
-									  <label htmlFor="class-select" className="block text-sm font-medium text-gray-900 mb-2">Classe</label>
-									<select
+									  <Label htmlFor="class-select" className="block text-sm font-medium text-gray-900 mb-2">Classe</Label>
+									<Select
 										id="class-select"
 										value={selectedClass}
 										onChange={(e) => handleClassChange(e.target.value)}
-										className="w-full rounded-none border border-gray-300 bg-white px-3 py-2 text-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 transition"
+										className="bg-white"
 									>
 										<option value="">— Sélectionner —</option>
 										{CLASS_OPTIONS.map(option => (
 											<option key={option} value={option}>{option}</option>
 										))}
-									</select>
+									</Select>
 								</div>
 								<div>
-									  <label htmlFor="school-year" className="block text-sm font-medium text-gray-900 mb-2">Année scolaire</label>
-									<input
+									  <Label htmlFor="school-year" className="block text-sm font-medium text-gray-900 mb-2">Année scolaire</Label>
+									<Input
 										id="school-year"
 										type="text"
 										placeholder="2025-2026"
 										value={selectedSchoolYear}
 										onChange={(e) => handleSchoolYearChange(e.target.value)}
-										className="w-full rounded-none border border-gray-300 px-3 py-2 text-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 transition"
+										
 									/>
 								</div>
 							</div>
@@ -322,14 +317,16 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, workshee
 								</div>
 								{logoError && <p className="text-sm text-red-600 mt-2">{logoError}</p>}
 								{logoPreview && (
-									<button
+									<Button
 										type="button"
 										onClick={handleRemoveLogo}
-										className="mt-3 inline-flex items-center gap-2 rounded-none border border-gray-300 px-3 py-1.5 text-xs font-medium text-gray-600 hover:border-red-600 hover:text-red-600 hover:bg-red-50 transition"
+										variant="outline"
+										size="sm"
+										className="mt-3 text-gray-600 hover:border-red-600 hover:text-red-600 hover:bg-red-50"
 									>
 										<ImageOff className="h-3.5 w-3.5" />
 										Retirer le logo
-									</button>
+									</Button>
 								)}
 							</div>
 						</section>
@@ -346,7 +343,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, workshee
 								</div>
 							</div>
 							<div className="flex items-center gap-4 ml-0 md:ml-12 bg-white p-4 rounded-none border border-slate-200">
-								<input
+								<Input
 									id="answer-height"
 									type="range"
 									min="50"
@@ -356,9 +353,9 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, workshee
 									onChange={handleHeightChange}
 									className="w-full h-2 bg-gray-200 rounded-none appearance-none cursor-pointer accent-blue-600"
 								/>
-								<label htmlFor="answer-height" className="font-mono font-bold text-blue-600 w-16 text-center text-lg">
+								<Label htmlFor="answer-height" className="font-mono font-bold text-blue-600 w-16 text-center text-lg">
 									{editableContent.settings?.answerSpaceMinHeight || 120}px
-								</label>
+								</Label>
 							</div>
 						</section>
 
@@ -391,13 +388,15 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, workshee
 											</div>
 											<span className="font-medium text-slate-700 truncate">{index + 1}. {ex.title}</span>
 										</div>
-										<button
+										<Button
 											onClick={() => handleDeleteExercise(index)}
-											  className="p-2 text-slate-400 hover:text-red-600 rounded-none hover:bg-red-50 transition"
+											variant="ghost"
+											size="icon"
+											className="text-slate-400 hover:text-red-600 hover:bg-red-50"
 											aria-label="Supprimer l'exercice"
 										>
 											<Trash2 className="h-4 w-4" />
-										</button>
+										</Button>
 									</div>
 								))}
 							</div>
@@ -405,16 +404,16 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, workshee
 					</div>
 				</main>
 
-			<footer className="flex justify-end items-center gap-3 px-6 py-4 border-t border-slate-200 bg-slate-50/50 rounded-none">
-					<button onClick={onClose} className="px-5 py-2.5 text-sm text-slate-600 bg-white border border-slate-300 rounded-none hover:bg-slate-50 font-medium transition shadow-sm">
+			<DialogFooter className="px-6 py-4 border-t border-border bg-card">
+					<Button onClick={onClose} variant="outline">
 						Annuler
-					</button>
-					<button onClick={handleSave} className="px-5 py-2.5 text-sm text-white bg-blue-600 rounded-none hover:bg-blue-700 font-medium transition shadow-sm">
+					</Button>
+					<Button onClick={handleSave}>
 						Enregistrer
-					</button>
-				</footer>
-			</div>
-		</div>
+					</Button>
+				</DialogFooter>
+			</DialogContent>
+		</Dialog>
 	);
 };
 
