@@ -208,17 +208,17 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({ exercise, exerciseNumber, a
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
 
   return (
-    <Card className="exercise-card bg-white text-black p-6 md:p-10 mb-10 print:shadow-none print:rounded-none print:bg-transparent print:text-black print:p-0 print:mb-6 print:border-none relative group/exercise">
+    <Card className="exercise-card art-card bg-white/90 text-black p-6 md:p-10 mb-10 rounded-2xl shadow-sm shadow-stone-900/5 print:shadow-none print:rounded-none print:bg-transparent print:text-black print:p-0 print:mb-6 print:border-none relative group/exercise">
       <h2 className="exercise-title text-xl font-bold font-display text-slate-900 print:text-black flex flex-col print:block items-start gap-3 mb-8 print:mb-5 pt-2">
         <Badge 
-          className="exercise-badge font-bold uppercase tracking-widest shadow-none print:mb-3 print:inline-flex"
+          className="exercise-badge exercise-badge-screen font-bold uppercase tracking-widest print:mb-2 print:inline-flex"
           style={{
-            backgroundColor: '#ffffff',
-            color: '#000000',
+            backgroundColor: 'transparent',
+            color: 'inherit',
             fontSize: '0.85rem',
             padding: '0.4rem 1rem',
             borderRadius: '0.4rem',
-            border: '1px solid #000000',
+            border: '1px solid transparent',
             display: 'inline-flex',
             alignItems: 'center',
             fontFamily: '"Space Grotesk", sans-serif',

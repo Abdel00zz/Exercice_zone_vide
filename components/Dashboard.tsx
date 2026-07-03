@@ -146,15 +146,15 @@ const Dashboard: React.FC<DashboardProps> = ({
     const visibleWorksheets = sortedWorksheets.slice(0, visibleCount);
 
     return (
-        <div className="min-h-screen bg-slate-50">
+        <div className="anthropic-shell min-h-screen">
             <div className="max-w-6xl mx-auto px-6 py-12 md:px-10">
 
             {/* ── Header ── */}
-            <header className="mb-12 border-b border-slate-200 pb-6">
+            <header className="mb-12 border-b border-stone-300/70 pb-6">
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6">
                     <div>
-                        <h1 className="text-3xl md:text-4xl font-semibold font-display text-slate-900 tracking-tight">Mes Fiches d'Exercices</h1>
-                        <p className="text-slate-500 mt-2 text-base">{worksheets.length} fiche{worksheets.length !== 1 ? 's' : ''} disponible{worksheets.length !== 1 ? 's' : ''}</p>
+                        <h1 className="text-3xl md:text-4xl font-semibold font-display text-stone-900 tracking-tight">Mes Fiches d'Exercices</h1>
+                        <p className="text-stone-600 mt-2 text-base">{worksheets.length} fiche{worksheets.length !== 1 ? 's' : ''} disponible{worksheets.length !== 1 ? 's' : ''}</p>
                     </div>
                     <div className="flex items-center gap-3 w-full sm:w-auto">
                         <div className="relative flex-grow sm:flex-grow-0">
@@ -172,7 +172,7 @@ const Dashboard: React.FC<DashboardProps> = ({
                         <Button
                             onClick={handleExportAll}
                             variant="secondary"
-                            className="shrink-0"
+                            className="shrink-0 bg-stone-900 text-orange-50 hover:bg-stone-800"
                             title="Exporter toutes les fiches en JSON"
                         >
                             <Download className="h-5 w-5" />
@@ -216,9 +216,9 @@ const Dashboard: React.FC<DashboardProps> = ({
                     {/* "New" card */}
                     <Card 
                         onClick={handleOpenCreateJson}
-                        className="group rounded-xl border-2 border-dashed border-slate-300 hover:border-blue-600 flex items-center justify-center cursor-pointer transition-all min-h-[200px] hover:bg-blue-50/50"
+                        className="art-card group rounded-2xl border-2 border-dashed border-stone-300 hover:border-orange-700 flex items-center justify-center cursor-pointer transition-all min-h-[200px] bg-white/70 hover:bg-orange-50/70"
                     >
-                        <div className="flex flex-col items-center gap-3 text-slate-500 group-hover:text-blue-600 transition-colors">
+                        <div className="flex flex-col items-center gap-3 text-stone-500 group-hover:text-orange-700 transition-colors">
                             <Plus className="h-8 w-8" />
                             <span className="text-base font-medium">Créer une nouvelle fiche</span>
                         </div>
@@ -231,7 +231,7 @@ const Dashboard: React.FC<DashboardProps> = ({
                         return (
                             <Card 
                                 key={ws.id} 
-                                className="group hover:border-blue-600 flex flex-col transition-all duration-200 hover:shadow-lg cursor-pointer min-h-[200px]"
+                                className="art-card group rounded-2xl bg-white/80 hover:border-orange-700 flex flex-col transition-all duration-200 hover:shadow-xl hover:shadow-stone-900/10 cursor-pointer min-h-[200px]"
                                 onClick={() => onSelectWorksheet(ws.id)}
                                 onDoubleClick={(e) => { e.stopPropagation(); handleEditJson(ws); }}
                                 title="Cliquez pour ouvrir"
@@ -251,7 +251,7 @@ const Dashboard: React.FC<DashboardProps> = ({
                                                />
                                            </form>
                                        ) : (
-                                           <h2 className="text-lg font-semibold font-display text-slate-900 leading-snug line-clamp-2 flex-1 group-hover:text-blue-700 transition-colors">
+                                           <h2 className="text-lg font-semibold font-display text-slate-900 leading-snug line-clamp-2 flex-1 group-hover:text-orange-800 transition-colors">
                                                {ws.name}
                                            </h2>
                                        )}
@@ -324,13 +324,13 @@ const Dashboard: React.FC<DashboardProps> = ({
                         <>
                             <Search className="h-10 w-10 text-slate-300 mx-auto mb-4" />
                             <h2 className="text-xl font-semibold text-slate-600">Aucun résultat</h2>
-                            <p className="text-slate-500 mt-2 text-base">Essayez avec d'autres mots-clés.</p>
+                            <p className="text-stone-600 mt-2 text-base">Essayez avec d'autres mots-clés.</p>
                         </>
                     ) : (
                         <>
                             <FileText className="h-10 w-10 text-slate-300 mx-auto mb-4" />
                             <h2 className="text-xl font-semibold text-slate-600">Aucune fiche</h2>
-                            <p className="text-slate-500 mt-2 text-base mb-6">Importez un fichier JSON ou créez une nouvelle fiche pour commencer.</p>
+                            <p className="text-stone-600 mt-2 text-base mb-6">Importez un fichier JSON ou créez une nouvelle fiche pour commencer.</p>
                             <button
                                 onClick={handleOpenCreateJson}
                                 className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-6 rounded-none transition shadow-sm"

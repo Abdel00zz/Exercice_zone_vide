@@ -415,3 +415,23 @@
     image-rendering: auto !important;
   }
 }
+
+@media print {
+  .exercise-badge,
+  .exercise-badge-screen {
+    background: #fff !important;
+    color: #000 !important;
+    border: 0.8pt solid #000 !important;
+    padding: 0.8mm 2.4mm !important;
+    border-radius: 2.5pt !important;
+    font-size: 8pt !important;
+    letter-spacing: 0.055em !important;
+    line-height: 1 !important;
+    min-height: auto !important;
+    box-shadow: none !important;
+  }
+
+  .exercise-title {
+    margin-bottom: 3.2mm !important;
+  }
+}
