@@ -393,3 +393,25 @@
     margin-bottom: 0 !important;
   }
 }
+@media print {
+  .print-render-root {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .answer-space {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  .math-text {
+    hyphens: none !important;
+    overflow-wrap: normal !important;
+  }
+
+  img, svg {
+    image-rendering: auto !important;
+  }
+}

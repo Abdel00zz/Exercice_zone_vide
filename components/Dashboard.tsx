@@ -2,6 +2,9 @@ import React, { useRef, useState, useMemo } from 'react';
 import type { Worksheet, WorksheetContent } from '../types';
 import { FileUp, Trash2, Pencil, Search, Code, Calendar, ChevronRight, FileText, Plus, Download } from 'lucide-react';
 import JSONEditorModal from './JSONEditorModal';
+import { Button, buttonVariants } from './ui/button';
+import { Card } from './ui/card';
+import { Input } from './ui/input';
 
 interface DashboardProps {
     worksheets: Worksheet[];
@@ -156,33 +159,36 @@ const Dashboard: React.FC<DashboardProps> = ({
                     <div className="flex items-center gap-3 w-full sm:w-auto">
                         <div className="relative flex-grow sm:flex-grow-0">
                             <Search className="h-5 w-5 text-slate-400 absolute top-1/2 left-3.5 -translate-y-1/2 pointer-events-none" />
-                            <input
+                            <Input
                                 type="text"
                                 placeholder="Rechercher..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                className="w-full sm:w-64 pl-10 pr-4 py-2.5 rounded-none border border-slate-300 bg-white text-base focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 transition placeholder:text-slate-400 outline-none"
+                                className="w-full sm:w-64 pl-10"
                                 aria-label="Rechercher une fiche par nom"
                             />
                         </div>
                         
-                        <button
+                        <Button
                             onClick={handleExportAll}
-                            className="flex items-center bg-slate-800 hover:bg-slate-900 text-white font-medium py-2.5 px-5 rounded-none cursor-pointer transition shrink-0 text-base gap-2 shadow-sm"
+                            variant="secondary"
+                            className="shrink-0"
                             title="Exporter toutes les fiches en JSON"
                         >
                             <Download className="h-5 w-5" />
                             <span className="hidden sm:inline">Exporter JSON</span>
-                        </button>
+                        </Button>
 
-                        <button
+                        <Button
                             onClick={handleOpenCreateJson}
-                            className="p-2.5 border border-slate-300 bg-white text-slate-600 hover:text-blue-600 hover:border-blue-600 rounded-none transition shrink-0"
+                            variant="outline"
+                            size="icon"
+                            className="text-slate-600 hover:text-blue-600 hover:border-blue-600 shrink-0"
                             title="Editeur JSON"
                             aria-label="Editeur JSON"
                         >
                             <Code className="h-5 w-5" />
-                        </button>
+                        </Button>
 
                         <input
                             type="file"
@@ -194,7 +200,7 @@ const Dashboard: React.FC<DashboardProps> = ({
                         />
                         <label
                             htmlFor="json-importer"
-                            className="flex items-center bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-5 rounded-none cursor-pointer transition shrink-0 text-base gap-2 shadow-sm"
+                            className={buttonVariants({ className: 'cursor-pointer shrink-0' })}
                         >
                             <FileUp className="h-5 w-5" />
                             <span>Importer JSON</span>
@@ -208,24 +214,24 @@ const Dashboard: React.FC<DashboardProps> = ({
                 <>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {/* "New" card */}
-                    <div 
+                    <Card 
                         onClick={handleOpenCreateJson}
-                        className="group rounded-none border-2 border-dashed border-slate-300 hover:border-blue-600 flex items-center justify-center cursor-pointer transition-all min-h-[200px] bg-white hover:bg-blue-50/50"
+                        className="group rounded-xl border-2 border-dashed border-slate-300 hover:border-blue-600 flex items-center justify-center cursor-pointer transition-all min-h-[200px] hover:bg-blue-50/50"
                     >
                         <div className="flex flex-col items-center gap-3 text-slate-500 group-hover:text-blue-600 transition-colors">
                             <Plus className="h-8 w-8" />
                             <span className="text-base font-medium">Créer une nouvelle fiche</span>
                         </div>
-                    </div>
+                    </Card>
 
                     {visibleWorksheets.map((ws) => {
                         const classNameLabel = ws.content?.settings?.className?.trim() || '';
                         const exerciseCount = ws.content?.exercises?.length || 0;
 
                         return (
-                            <div 
+                            <Card 
                                 key={ws.id} 
-                                className="group bg-white rounded-none border border-slate-300 hover:border-blue-600 flex flex-col transition-all duration-200 hover:shadow-lg cursor-pointer min-h-[200px]"
+                                className="group hover:border-blue-600 flex flex-col transition-all duration-200 hover:shadow-lg cursor-pointer min-h-[200px]"
                                 onClick={() => onSelectWorksheet(ws.id)}
                                 onDoubleClick={(e) => { e.stopPropagation(); handleEditJson(ws); }}
                                 title="Cliquez pour ouvrir"
@@ -296,7 +302,7 @@ const Dashboard: React.FC<DashboardProps> = ({
                                        </div>
                                    </div>
                                </div>
-                            </div>
+                            </Card>
                         );
                     })}
                 </div>

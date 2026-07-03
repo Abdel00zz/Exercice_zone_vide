@@ -113,7 +113,12 @@ const App: React.FC = () => {
   
   React.useEffect(() => {
     const storedWorksheets = window.localStorage.getItem('worksheets');
-    if (!storedWorksheets || JSON.parse(storedWorksheets).length === 0) {
+    try {
+      const parsedWorksheets = storedWorksheets ? JSON.parse(storedWorksheets) : [];
+      if (!Array.isArray(parsedWorksheets) || parsedWorksheets.length === 0) {
+        setWorksheets([createDefaultWorksheet()]);
+      }
+    } catch {
       setWorksheets([createDefaultWorksheet()]);
     }
   }, [setWorksheets]);
@@ -266,7 +271,7 @@ const App: React.FC = () => {
             onBack={handleBackToDashboard}
             onOpenSettings={() => setIsSettingsModalOpen(true)}
           />
-          <main className="max-w-4xl mx-auto px-4 py-8 print:max-w-none print:p-0 print:py-0">
+          <main className="print-render-root max-w-4xl mx-auto px-4 py-8 print:max-w-none print:p-0 print:py-0">
             <div className="space-y-8 print:space-y-6">
               <div className="title-and-first-exercise-container space-y-6 print:space-y-4">
                 <div className="flex flex-wrap items-start justify-between text-xs font-semibold uppercase tracking-wider text-slate-500 print:text-[9pt] print:text-black">

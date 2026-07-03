@@ -4,6 +4,9 @@ import MathText from './MathText';
 import AnswerSpace from './AnswerSpace';
 import ImageModal from './ImageModal';
 import { Image as ImageIcon } from 'lucide-react';
+import { Card } from './ui/card';
+import { Badge } from './ui/badge';
+import { Button } from './ui/button';
 
 interface ExerciseCardProps {
   exercise: Exercise;
@@ -205,10 +208,10 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({ exercise, exerciseNumber, a
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
 
   return (
-    <div className="exercise-card bg-white text-black p-6 md:p-10 rounded-xl shadow-sm mb-10 print:shadow-none print:rounded-none print:bg-transparent print:text-black print:p-0 print:mb-6 border border-slate-100 print:border-none relative group/exercise">
+    <Card className="exercise-card bg-white text-black p-6 md:p-10 mb-10 print:shadow-none print:rounded-none print:bg-transparent print:text-black print:p-0 print:mb-6 print:border-none relative group/exercise">
       <h2 className="exercise-title text-xl font-bold font-display text-slate-900 print:text-black flex flex-col print:block items-start gap-3 mb-8 print:mb-5 pt-2">
-        <span 
-          className="exercise-badge font-bold uppercase tracking-widest shadow-none print:mb-3 print:inline-block"
+        <Badge 
+          className="exercise-badge font-bold uppercase tracking-widest shadow-none print:mb-3 print:inline-flex"
           style={{
             backgroundColor: '#ffffff',
             color: '#000000',
@@ -227,17 +230,19 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({ exercise, exerciseNumber, a
           }}
         >
           Exercice {exerciseNumber}
-        </span>
+        </Badge>
       </h2>
       
       {/* Bouton d'ajout d'image pour l'énoncé (visible au survol) */}
-      <button
+      <Button
         onClick={() => setIsImageModalOpen(true)}
-        className="absolute top-6 right-6 p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded opacity-0 group-hover/exercise:opacity-100 transition-opacity no-print"
+        variant="ghost"
+        size="icon"
+        className="absolute top-6 right-6 text-slate-400 hover:text-blue-600 opacity-0 group-hover/exercise:opacity-100 transition-opacity no-print"
         title="Ajouter/Modifier une image pour l'énoncé"
       >
         <ImageIcon className="w-5 h-5" />
-      </button>
+      </Button>
 
       {exercise.statement && (
         <div className="exercise-statement prose prose-lg max-w-none text-black print:text-black mb-8 pl-1">
@@ -302,7 +307,7 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({ exercise, exerciseNumber, a
           setIsImageModalOpen(false);
         }}
       />
-    </div>
+    </Card>
   );
 };
 
